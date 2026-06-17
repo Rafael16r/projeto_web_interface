@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<!-- ============================================================
+     index.html — Visitar Guimarães (versão guigui)
+     Página única com secções: hero com pesquisa, estatísticas,
+     história, pontos de interesse (dinâmicos via API Flask),
+     atividades, gastronomia, galeria, eventos, alojamento,
+     ligações externas, contacto, newsletter, mapa e chatbot IA.
+     ============================================================ -->
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Portal de turismo de Guimarães — Berço de Portugal e Património Mundial da UNESCO. Descubra monumentos, história, gastronomia, eventos e alojamento." />
+  <title>Visitar Guimarães – Portal de Turismo</title>
+
+  <!-- Open Graph / Twitter: pré-visualização ao partilhar o link em redes sociais -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Visitar Guimarães – Portal de Turismo" />
+  <meta property="og:description" content="Berço de Portugal e Património Mundial da UNESCO. Descubra monumentos, história, gastronomia, eventos e alojamento." />
+  <meta property="og:image" content="images/web/hero-castelo.jpg" />
+  <meta property="og:locale" content="pt_PT" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='80' font-size='80'%3E%E2%9A%9C%3C/text%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ============ NAVBAR ============ -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-inner">
+      <a href="#home" class="nav-logo">
+        <span class="logo-icon">⚜</span>
+        <div>
+          <span class="logo-visit">Visitar</span><span class="logo-city">Guimarães</span>
+          <small>Berço de Portugal</small>
+        </div>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#descobrir">Descobrir</a></li>
+        <li><a href="#historia">História</a></li>
+        <li><a href="#atividades">Atividades</a></li>
+        <li><a href="#gastronomia">Gastronomia</a></li>
+        <li><a href="#galeria">Galeria</a></li>
+        <li><a href="#eventos">Eventos</a></li>
+        <li><a href="#alojamento">Alojamento</a></li>
+        <li><a href="#ligacoes">Links</a></li>
+        <li><a href="#contacto-form">Contacto</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="btn-lang" id="langToggle" title="Switch language to English">PT | EN</button>
+        <button class="hamburger" id="hamburger" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="#descobrir">Descobrir</a>
+      <a href="#historia">História</a>
+      <a href="#atividades">Atividades</a>
+      <a href="#gastronomia">Gastronomia</a>
+      <a href="#galeria">Galeria</a>
+      <a href="#eventos">Eventos</a>
+      <a href="#alojamento">Alojamento</a>
+      <a href="#ligacoes">Links Úteis</a>
+      <a href="#contacto-form">Contacto</a>
+      <a href="#transportes">Mapa</a>
+    </div>
+  </nav>
+
+  <!-- ============ HERO ============ -->
+  <section class="hero" id="home">
+    <div class="hero-bg">
+      <img src="images/web/hero-castelo.jpg" alt="Castelo de Guimarães" class="hero-img" width="1920" height="1080" fetchpriority="high" />
+      <div class="hero-overlay"></div>
+    </div>
+    <div class="hero-content">
+      <p class="hero-label">Bem-vindo a</p>
+      <h1 class="hero-title">Guimarães</h1>
+      <p class="hero-subtitle">Aqui nasceu Portugal. Uma cidade onde a história não está em museu — está na rua.</p>
+      <div class="hero-search" id="heroSearch">
+        <form class="search-bar" id="tourismSearchForm" autocomplete="off">
+          <div class="search-field">
+            <label for="tourismQuery">O que procura?</label>
+            <input type="text" id="tourismQuery" name="query" placeholder="Ex: castelo, eventos este fim de semana…" />
+          </div>
+          <div class="search-divider"></div>
+          <div class="search-field">
+            <label for="tourismDate">Quando?</label>
+            <input type="date" id="tourismDate" name="date" />
+          </div>
+          <button class="btn-search" type="submit">&#128269; Pesquisar</button>
+        </form>
+
+        <!-- Painel de sugestões (abre ao focar o campo) -->
+        <div class="hs-panel" id="hsPanel" hidden>
+          <div class="hs-panel-body" id="hsPanelBody"></div>
+        </div>
+
+        <!-- Resposta IA no hero (aparece após pesquisa) -->
+        <div class="hs-ai" id="hsAi" hidden>
+          <div class="hs-ai-head">
+            <span class="hs-ai-spark">✨</span>
+            <span class="hs-ai-label">Resposta IA sobre Guimarães</span>
+            <button class="hs-ai-close" id="hsAiClose" aria-label="Fechar resposta">✕</button>
+          </div>
+          <div class="hs-ai-body" id="hsAiBody"></div>
+          <div class="hs-ai-actions" id="hsAiActions"></div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-scroll">
+      <span>Descobrir mais</span>
+      <div class="scroll-arrow">↓</div>
+    </div>
+  </section>
+
+  <!-- ============ STATS ============ -->
+  <section class="stats">
+    <div class="stats-inner">
+      <div class="stat-item">
+        <span class="stat-number">850+</span>
+        <span class="stat-label">Anos de história</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">52k</span>
+        <span class="stat-label">Habitantes</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">UNESCO</span>
+        <span class="stat-label">Património Mundial</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">2012</span>
+        <span class="stat-label">Capital Europeia da Cultura</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ HISTÓRIA ============ -->
+  <section class="section historia bg-light" id="historia">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Origens</span>
+        <h2 class="section-title">História de Guimarães</h2>
+        <p class="section-desc">A cidade onde Portugal nasceu, com mais de mil anos de história que moldaram uma nação.</p>
+      </div>
+      <div class="historia-grid">
+        <div class="historia-img">
+          <img src="images/web/paco-duques.jpg" alt="Paço dos Duques de Bragança" loading="lazy" />
+        </div>
+        <div class="historia-content">
+          <div class="historia-item">
+            <span class="historia-ano">Séc. X</span>
+            <div>
+              <h4>Fundação do Condado</h4>
+              <p>Guimarães surge como núcleo de poder do Condado Portucalense, com a construção do Castelo por Mumadona Dias para defesa contra as invasões mourisca e normanda.</p>
+            </div>
+          </div>
+          <div class="historia-item">
+            <span class="historia-ano">1128</span>
+            <div>
+              <h4>Batalha de São Mamede</h4>
+              <p>D. Afonso Henriques vence a batalha decisiva nas imediações de Guimarães, afirmando a independência do Condado Portucalense e tornando-se o primeiro rei de Portugal.</p>
+            </div>
+          </div>
+          <div class="historia-item">
+            <span class="historia-ano">Séc. XV</span>
+            <div>
+              <h4>Paço dos Duques de Bragança</h4>
+              <p>D. Afonso, 1.º Duque de Bragança, manda construir o imponente palácio gótico que ainda hoje domina a colina do castelo e serve de residência oficial ao Presidente da República.</p>
+            </div>
+          </div>
+          <div class="historia-item">
+            <span class="historia-ano">2001</span>
+            <div>
+              <h4>Património Mundial UNESCO</h4>
+              <p>Em 2001, a UNESCO inscreveu o Centro Histórico de Guimarães na lista do Património Mundial. É um dos conjuntos urbanos medievais mais bem preservados da Europa.</p>
+            </div>
+          </div>
+          <div class="historia-item">
+            <span class="historia-ano">2012</span>
+            <div>
+              <h4>Capital Europeia da Cultura</h4>
+              <p>Em 2012, Guimarães foi Capital Europeia da Cultura. O título trouxe novos espaços culturais e colocou a cidade definitivamente no mapa europeu.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ DESCOBRIR ============ -->
+  <section class="section descobrir" id="descobrir">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Pontos de Interesse</span>
+        <h2 class="section-title">Descobrir Guimarães</h2>
+        <p class="section-desc">Há muito para ver em Guimarães — desde castelos medievais a museus, passando por igrejas e miradouros com vistas que vale a pena guardar.</p>
+      </div>
+
+      <!-- Resposta da pesquisa inteligente (modo IA, Google Gemini) -->
+      <div class="ai-answer" id="aiAnswer" aria-live="polite" hidden>
+        <div class="ai-answer-head">
+          <span class="ai-spark">✨</span>
+          <span id="aiAnswerLabel">Resposta IA</span>
+        </div>
+        <p class="ai-answer-body" id="aiAnswerBody"></p>
+        <p class="ai-answer-note" id="aiAnswerNote"></p>
+      </div>
+
+      <!-- Grelha preenchida dinamicamente pela API (GET /api/places);
+           os cartões abaixo são o conteúdo inicial/fallback sem JavaScript -->
+      <div class="cards-grid" id="tourismResults">
+
+        <div class="card card-large">
+          <div class="card-img-wrap">
+            <img src="images/web/castelo-card.jpg" alt="Castelo de Guimarães" loading="eager" />
+            <span class="card-badge">Imperdível</span>
+          </div>
+          <div class="card-body">
+            <span class="card-cat">Monumentos</span>
+            <h3>Castelo de Guimarães</h3>
+            <p>Foi aqui que nasceu D. Afonso Henriques e, com ele, Portugal. O castelo ainda hoje impressiona quem sobe à colina.</p>
+            <a href="https://pacodosduques.gov.pt/monumentos/castelo-de-guimaraes/" target="_blank" rel="noopener" class="card-link">Saber mais <span>→</span></a>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-img-wrap">
+            <img src="images/web/paco-duques.jpg" alt="Paço dos Duques de Bragança" loading="lazy" />
+          </div>
+          <div class="card-body">
+            <span class="card-cat">Palácios</span>
+            <h3>Paço dos Duques de Bragança</h3>
+            <p>Construído no século XV pelo 1.º Duque de Bragança, é hoje residência oficial do Presidente e um dos palácios medievais melhor preservados do país.</p>
+            <a href="https://pacodosduques.gov.pt/" target="_blank" rel="noopener" class="card-link">Saber mais <span>→</span></a>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-img-wrap">
+            <img src="images/web/serra-da-penha.jpg" alt="Serra da Penha – Santuário da Penha" loading="lazy" />
+          </div>
+          <div class="card-body">
+            <span class="card-cat">Natureza</span>
+            <h3>Serra da Penha</h3>
+            <p>Sobe-se de teleférico ou a pé — de qualquer forma, lá em cima a vista sobre Guimarães compensa o esforço.</p>
+            <a href="https://www.penhaguimaraes.com/pt/" target="_blank" rel="noopener" class="card-link">Saber mais <span>→</span></a>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-img-wrap">
+            <img src="images/web/centro-historico.jpg" alt="Praça de Santiago – Centro Histórico" loading="lazy" />
+            <span class="card-badge card-badge-alt">UNESCO</span>
+          </div>
+          <div class="card-body">
+            <span class="card-cat">Centro Histórico</span>
+            <h3>Centro Histórico</h3>
+            <p>Percorrer o centro histórico a pé é recuar no tempo — as ruas estreitas, os arcos e as praças de granito não mudaram muito em seis séculos.</p>
+            <a href="https://unescoportugal.mne.gov.pt/pt/temas/proteger-o-nosso-patrimonio-e-promover-a-criatividade/patrimonio-mundial-em-portugal/centro-historico-de-guimaraes" target="_blank" rel="noopener" class="card-link">Saber mais <span>→</span></a>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-img-wrap">
+            <img src="images/web/igreja-oliveira.jpg" alt="Igreja de Nossa Senhora da Oliveira" loading="lazy" />
+          </div>
+          <div class="card-body">
+            <span class="card-cat">Igrejas</span>
+            <h3>Igreja de N.ª Sr.ª da Oliveira</h3>
+            <p>No centro do Largo da Oliveira, esta colegiada fundada por D. Afonso Henriques é o ponto de encontro da cidade há séculos.</p>
+            <a href="https://pt.wikipedia.org/wiki/Categoria:Igrejas_em_Guimar%C3%A3es" target="_blank" rel="noopener" class="card-link">Saber mais <span>→</span></a>
+          </div>
+        </div>
+
+      </div>
+      <p class="tourism-status" id="tourismStatus" aria-live="polite"></p>
+      <div class="section-cta">
+        <a href="#" class="btn btn-outline" id="showAllPlaces">Ver todos os pontos de interesse</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ATIVIDADES ============ -->
+  <section class="section atividades bg-light" id="atividades">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Experiências</span>
+        <h2 class="section-title">O que fazer em Guimarães</h2>
+        <p class="section-desc">Seja para explorar o castelo, subir à Penha ou assistir a um jogo do Vitória, há sempre qualquer coisa para fazer em Guimarães.</p>
+      </div>
+      <!-- Cada atividade liga ao site oficial correspondente -->
+      <div class="activities-grid">
+        <a class="activity-card" href="https://www.visitguimaraes.travel/" target="_blank" rel="noopener">
+          <div class="activity-icon">🏰</div>
+          <h4>Turismo Histórico</h4>
+          <p>Percursos guiados pelo centro histórico e monumentos medievais.</p>
+        </a>
+        <a class="activity-card" href="https://www.turipenha.pt/teleferico" target="_blank" rel="noopener">
+          <div class="activity-icon">🚠</div>
+          <h4>Teleférico da Penha</h4>
+          <p>Vistas deslumbrantes da cidade a bordo do teleférico.</p>
+        </a>
+        <a class="activity-card" href="https://www.penhaguimaraes.com/pt/" target="_blank" rel="noopener">
+          <div class="activity-icon">🥾</div>
+          <h4>Trilhos na Natureza</h4>
+          <p>Caminhadas pela Serra da Penha e parques naturais.</p>
+        </a>
+        <a class="activity-card" href="https://www.ccvf.pt/" target="_blank" rel="noopener">
+          <div class="activity-icon">🎨</div>
+          <h4>Arte & Cultura</h4>
+          <p>Museus, galerias e espectáculos ao longo de todo o ano.</p>
+        </a>
+        <a class="activity-card" href="https://www.visitguimaraes.travel/descobrir/compras-e-artesanato" target="_blank" rel="noopener">
+          <div class="activity-icon">🛍️</div>
+          <h4>Artesanato Local</h4>
+          <p>Loiça de barro, filigrana e têxteis tradicionais de Guimarães.</p>
+        </a>
+        <a class="activity-card" href="https://www.vitoriasc.pt" target="_blank" rel="noopener">
+          <div class="activity-icon">⚽</div>
+          <h4>Desporto</h4>
+          <p>Apoie o Vitória SC num dos estádios mais bonitos do país.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BANNER CTA ============ -->
+  <section class="banner-cta">
+    <div class="banner-bg">
+      <img src="images/web/largo-da-oliveira.jpg" alt="Largo da Oliveira" loading="lazy" />
+      <div class="banner-overlay"></div>
+    </div>
+    <div class="banner-content">
+      <h2>"Aqui nasceu Portugal"</h2>
+      <p>Guimarães não se visita apenas — sente-se. Traga a família, os amigos, ou venha sozinho. Vai querer voltar.</p>
+      <a href="#contacto-form" class="btn btn-primary btn-lg">Planear a minha visita</a>
+    </div>
+  </section>
+
+  <!-- ============ GASTRONOMIA ============ -->
+  <section class="section gastronomia" id="gastronomia">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Sabores Locais</span>
+        <h2 class="section-title">Gastronomia Vimaranense</h2>
+        <p class="section-desc">Comer bem em Guimarães não é difícil. O bacalhau, o pão-de-ló e o vinho verde da região falam por si.</p>
+      </div>
+      <div class="food-grid">
+        <div class="food-card">
+          <div class="food-img">
+            <img src="images/web/pao-de-lo.jpg" alt="Pão-de-Ló de Margaride" loading="lazy" />
+          </div>
+          <div class="food-body">
+            <h4>Pão-de-Ló de Margaride</h4>
+            <p>Húmido por dentro, dourado por fora — quem prova uma vez raramente fica por um só pedaço.</p>
+            <span class="food-tag">Doçaria</span>
+          </div>
+        </div>
+        <div class="food-card">
+          <div class="food-img">
+            <img src="images/web/bacalhau-vimaranense.jpg" alt="Bacalhau à Vimaranense" loading="lazy" />
+          </div>
+          <div class="food-body">
+            <h4>Bacalhau à Vimaranense</h4>
+            <p>Grão-de-bico, ovo cozido, bastante azeite e a alma da cozinha minhota. Cada tasca tem a sua versão — e todas merecem ser provadas.</p>
+            <span class="food-tag">Prato Principal</span>
+          </div>
+        </div>
+        <div class="food-card">
+          <div class="food-img">
+            <img src="images/web/vinho-verde.jpg" alt="Vinho Verde" loading="lazy" />
+          </div>
+          <div class="food-body">
+            <h4>Vinho Verde</h4>
+            <p>Fresco, levemente efervescente e produzido aqui ao lado — o vinho verde local combina com tudo, mas especialmente com o peixe e o marisco do Minho.</p>
+            <span class="food-tag">Vinhos</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ GALERIA ============ -->
+  <section class="section galeria" id="galeria">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Fotografias</span>
+        <h2 class="section-title">Galeria de Imagens</h2>
+        <p class="section-desc">Algumas das imagens que melhor representam Guimarães — para quem já visitou e quer recordar, ou para quem ainda está a planear a viagem.</p>
+      </div>
+      <div class="galeria-grid">
+        <div class="galeria-item galeria-large">
+          <img src="images/web/hero-castelo.jpg" alt="Castelo de Guimarães" loading="lazy" />
+          <div class="galeria-caption">Castelo de Guimarães</div>
+        </div>
+        <div class="galeria-item">
+          <img src="images/web/largo-da-oliveira.jpg" alt="Largo da Oliveira" loading="lazy" />
+          <div class="galeria-caption">Largo da Oliveira</div>
+        </div>
+        <div class="galeria-item">
+          <img src="images/web/paco-duques.jpg" alt="Paço dos Duques de Bragança" loading="lazy" />
+          <div class="galeria-caption">Paço dos Duques</div>
+        </div>
+        <div class="galeria-item">
+          <img src="images/web/praca-santiago.jpg" alt="Praça de Santiago" loading="lazy" />
+          <div class="galeria-caption">Praça de Santiago</div>
+        </div>
+        <div class="galeria-item">
+          <img src="images/web/igreja-oliveira.jpg" alt="Igreja de Nossa Senhora da Oliveira" loading="lazy" />
+          <div class="galeria-caption">Igreja da Oliveira</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ EVENTOS ============ -->
+  <section class="section eventos bg-light" id="eventos">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Agenda</span>
+        <h2 class="section-title">Eventos em Destaque</h2>
+        <p class="section-desc">De junho a setembro a cidade não para — mas mesmo fora de época há sempre qualquer coisa a acontecer.</p>
+      </div>
+      <!-- Lista preenchida dinamicamente a partir da Agenda Cultural
+           (em.guimaraes.pt via API Flask); os cartões abaixo são o
+           conteúdo inicial/fallback sem JavaScript -->
+      <div class="events-list" id="eventsList">
+        <div class="event-card">
+          <div class="event-date">
+            <span class="event-day">14</span>
+            <span class="event-month">Jun</span>
+          </div>
+          <div class="event-info">
+            <span class="event-cat">Festas Religiosas</span>
+            <h4>Festas Gualterianas</h4>
+            <p>As maiores festas de Guimarães, com cortejo histórico, fogo de artifício e animação na cidade.</p>
+            <div class="event-meta">
+              <span>📍 Centro Histórico</span>
+              <span>🕐 Todo o dia</span>
+            </div>
+          </div>
+          <a href="https://www.cm-guimaraes.pt/areas-de-intervencao/noticia/festas-da-cidade-e-gualterianas-2025-animam-guimaraes-de-25-de-julho-a-4-de-agosto" target="_blank" rel="noopener" class="btn btn-sm">Ver detalhes</a>
+        </div>
+        <div class="event-card">
+          <div class="event-date">
+            <span class="event-day">22</span>
+            <span class="event-month">Jul</span>
+          </div>
+          <div class="event-info">
+            <span class="event-cat">Música</span>
+            <h4>GNRation Festival</h4>
+            <p>Festival de música contemporânea e artes no espaço cultural GNRation.</p>
+            <div class="event-meta">
+              <span>📍 GNRation</span>
+              <span>🕐 21h00</span>
+            </div>
+          </div>
+          <a href="https://www.gnration.pt/" target="_blank" rel="noopener" class="btn btn-sm">Ver detalhes</a>
+        </div>
+        <div class="event-card">
+          <div class="event-date">
+            <span class="event-day">05</span>
+            <span class="event-month">Ago</span>
+          </div>
+          <div class="event-info">
+            <span class="event-cat">Gastronomia</span>
+            <h4>Feira Medieval de Guimarães</h4>
+            <p>Recriação histórica com mercado medieval, espectáculos e gastronomia típica.</p>
+            <div class="event-meta">
+              <span>📍 Largo da Oliveira</span>
+              <span>🕐 15h00 – 24h00</span>
+            </div>
+          </div>
+          <a href="https://em.guimaraes.pt/" target="_blank" rel="noopener" class="btn btn-sm">Ver detalhes</a>
+        </div>
+        <div class="event-card">
+          <div class="event-date">
+            <span class="event-day">18</span>
+            <span class="event-month">Set</span>
+          </div>
+          <div class="event-info">
+            <span class="event-cat">Desporto</span>
+            <h4>Meia Maratona de Guimarães</h4>
+            <p>Corrida histórica pelas ruas e monumentos da cidade, aberta a todos os níveis.</p>
+            <div class="event-meta">
+              <span>📍 Cidade de Guimarães</span>
+              <span>🕐 09h00</span>
+            </div>
+          </div>
+          <a href="https://em.guimaraes.pt/" target="_blank" rel="noopener" class="btn btn-sm">Ver detalhes</a>
+        </div>
+      </div>
+      <!-- Resultado da pesquisa por data (campo "Quando?" do hero) -->
+      <p class="tourism-status" id="eventsStatus" aria-live="polite"></p>
+      <div class="section-cta">
+        <a href="https://em.guimaraes.pt/" target="_blank" rel="noopener" class="btn btn-outline">Ver agenda completa</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ALOJAMENTO ============ -->
+  <section class="section alojamento" id="alojamento">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Onde Ficar</span>
+        <h2 class="section-title">Alojamento em Guimarães</h2>
+        <p class="section-desc">Ficar no centro histórico é a melhor forma de aproveitar a cidade — a pé, sem pressa e sem perder nada.</p>
+      </div>
+      <div class="hotel-grid">
+        <div class="hotel-card hotel-full">
+          <div class="hotel-img">
+            <img src="images/web/hotel-oliveira.jpg" alt="Hotel da Oliveira" loading="lazy" />
+            <span class="hotel-stars">★★★★★</span>
+          </div>
+          <div class="hotel-body">
+            <h4>Hotel da Oliveira</h4>
+            <p class="hotel-loc">📍 Centro Histórico</p>
+            <p>Fica mesmo no Largo da Oliveira, frente à Colegiada. Acordar com aquela vista ao pequeno-almoço tem um preço, mas vale cada euro.</p>
+            <div class="hotel-footer">
+              <span class="hotel-price">A partir de <strong>95€</strong>/noite</span>
+              <a href="https://www.hoteldaoliveira.com/pt" target="_blank" rel="noopener" class="btn btn-sm">Reservar</a>
+            </div>
+          </div>
+        </div>
+        <div class="hotel-card">
+          <div class="hotel-img">
+            <img src="images/web/pousada-guimaraes.jpg" alt="Pousada de Santa Marinha" loading="lazy" />
+            <span class="hotel-stars">★★★★</span>
+          </div>
+          <div class="hotel-body">
+            <h4>Pousada do Castelo</h4>
+            <p class="hotel-loc">📍 Colina do Castelo</p>
+            <p>Instalada num mosteiro medieval recuperado, a pousada fica mesmo ao pé do castelo. O ambiente é diferente de qualquer hotel normal.</p>
+            <div class="hotel-footer">
+              <span class="hotel-price">A partir de <strong>120€</strong>/noite</span>
+              <a href="https://www.pousadas.pt/pt/hotel/pousada-guimaraes" target="_blank" rel="noopener" class="btn btn-sm">Reservar</a>
+            </div>
+          </div>
+        </div>
+        <div class="hotel-card">
+          <div class="hotel-img">
+            <img src="images/web/albergue-guimaraes.jpg" alt="HI Guimaraes - Pousada de Juventude" loading="lazy" />
+            <span class="hotel-stars">★★★</span>
+          </div>
+          <div class="hotel-body">
+            <h4>HI Guimaraes - Pousada de Juventude</h4>
+            <p class="hotel-loc">📍 Centro da Cidade</p>
+            <p>Boa opção para quem viaja com orçamento mais apertado — quartos limpos, boa localização e a possibilidade de conhecer outros viajantes.</p>
+            <div class="hotel-footer">
+              <span class="hotel-price">A partir de <strong>28€</strong>/noite</span>
+              <a href="https://www.pousadasjuventude.pt/pt/pousadas/pousada-de-guimaraes/" target="_blank" rel="noopener" class="btn btn-sm">Reservar</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ LIGAÇÕES EXTERNAS ============ -->
+  <section class="section ligacoes bg-light" id="ligacoes">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Recursos Úteis</span>
+        <h2 class="section-title">Ligações Externas</h2>
+        <p class="section-desc">Antes de partir, vale a pena consultar estes sítios — têm horários, bilhetes, transportes e muito mais.</p>
+      </div>
+      <div class="ligacoes-grid">
+        <a href="https://www.cm-guimaraes.pt" target="_blank" rel="noopener" class="ligacao-card">
+          <div class="ligacao-icon">🏛️</div>
+          <div class="ligacao-body">
+            <h4>Câmara Municipal de Guimarães</h4>
+            <p>Portal oficial do município com serviços, notícias e informações locais.</p>
+            <span class="ligacao-url">cm-guimaraes.pt →</span>
+          </div>
+        </a>
+        <a href="https://www.guimaraesturismo.com" target="_blank" rel="noopener" class="ligacao-card">
+          <div class="ligacao-icon">🗺️</div>
+          <div class="ligacao-body">
+            <h4>Guimarães Turismo</h4>
+            <p>Portal oficial de turismo com guias, roteiros e agenda de eventos.</p>
+            <span class="ligacao-url">guimaraesturismo.com →</span>
+          </div>
+        </a>
+        <a href="https://whc.unesco.org/en/list/1031" target="_blank" rel="noopener" class="ligacao-card">
+          <div class="ligacao-icon">🌍</div>
+          <div class="ligacao-body">
+            <h4>UNESCO – Património Mundial</h4>
+            <p>Página oficial da UNESCO sobre o Centro Histórico de Guimarães.</p>
+            <span class="ligacao-url">whc.unesco.org →</span>
+          </div>
+        </a>
+        <a href="https://www.visitportugal.com/pt-pt/destinos/norte/guimaraes" target="_blank" rel="noopener" class="ligacao-card">
+          <div class="ligacao-icon">🇵🇹</div>
+          <div class="ligacao-body">
+            <h4>Turismo de Portugal</h4>
+            <p>Informação turística oficial de Portugal sobre Guimarães e a região Norte.</p>
+            <span class="ligacao-url">visitportugal.com →</span>
+          </div>
+        </a>
+        <a href="https://www.vitoriasc.pt" target="_blank" rel="noopener" class="ligacao-card">
+          <div class="ligacao-icon">⚽</div>
+          <div class="ligacao-body">
+            <h4>Vitória Sport Clube</h4>
+            <p>Site oficial do clube de futebol da cidade, um dos mais emblemáticos de Portugal.</p>
+            <span class="ligacao-url">vitoriasc.pt →</span>
+          </div>
+        </a>
+        <a href="https://cp.pt" target="_blank" rel="noopener" class="ligacao-card">
+          <div class="ligacao-icon">🚂</div>
+          <div class="ligacao-body">
+            <h4>CP – Comboios de Portugal</h4>
+            <p>Horários e bilhetes de comboio para chegar a Guimarães a partir de todo o país.</p>
+            <span class="ligacao-url">cp.pt →</span>
+          </div>
+        </a>
+      </div>
+      <!-- Resultado da pesquisa aplicada às ligações externas -->
+      <p class="tourism-status" id="ligacoesStatus" aria-live="polite"></p>
+    </div>
+  </section>
+
+  <!-- ============ FORMULÁRIO DE CONTACTO ============ -->
+  <section class="section contacto-form-section" id="contacto-form">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Fale Connosco</span>
+        <h2 class="section-title">Formulário de Contacto</h2>
+        <p class="section-desc">Tem dúvidas ou sugestões? Envie-nos uma mensagem e responderemos o mais brevemente possível.</p>
+      </div>
+      <div class="contacto-form-wrap">
+        <form class="contacto-form" id="contactoForm" novalidate>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="cf-nome">Nome completo <span class="req">*</span></label>
+              <input type="text" id="cf-nome" name="nome" placeholder="O seu nome" autocomplete="name" />
+              <span class="form-error" id="err-nome"></span>
+            </div>
+            <div class="form-group">
+              <label for="cf-email">Endereço de e-mail <span class="req">*</span></label>
+              <input type="email" id="cf-email" name="email" placeholder="exemplo@email.com" autocomplete="email" />
+              <span class="form-error" id="err-email"></span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="cf-assunto">Assunto <span class="req">*</span></label>
+            <select id="cf-assunto" name="assunto">
+              <option value="">Selecione um assunto…</option>
+              <option value="informacao">Pedido de informação</option>
+              <option value="eventos">Eventos e agenda</option>
+              <option value="alojamento">Alojamento</option>
+              <option value="acessibilidade">Turismo acessível</option>
+              <option value="outro">Outro</option>
+            </select>
+            <span class="form-error" id="err-assunto"></span>
+          </div>
+          <div class="form-group">
+            <label for="cf-mensagem">Mensagem <span class="req">*</span></label>
+            <textarea id="cf-mensagem" name="mensagem" rows="5" placeholder="Escreva a sua mensagem…"></textarea>
+            <span class="form-error" id="err-mensagem"></span>
+          </div>
+          <div class="form-group form-check">
+            <label class="check-label">
+              <input type="checkbox" id="cf-privacidade" name="privacidade" />
+              <span id="privacyLabelText">Aceito a <a href="#privacidade" class="link-inline">Política de Privacidade</a> e autorizo o tratamento dos meus dados pessoais. <span class="req">*</span></span>
+            </label>
+            <span class="form-error" id="err-privacidade"></span>
+          </div>
+          <div class="form-footer">
+            <p class="form-required-note"><span class="req">*</span> Campos obrigatórios</p>
+            <button type="submit" class="btn btn-primary btn-lg">Enviar Mensagem</button>
+          </div>
+          <div class="form-success" id="formSuccess">
+            ✅ Mensagem enviada com sucesso! Entraremos em contacto brevemente.
+          </div>
+        </form>
+
+        <!-- Política de privacidade (alvo do link do formulário) -->
+        <aside class="privacy-note" id="privacidade">
+          <h4>Política de Privacidade</h4>
+          <p>Os dados submetidos neste formulário (nome, email, assunto e mensagem) são utilizados exclusivamente para responder ao seu contacto e não são partilhados com terceiros. A subscrição da newsletter guarda apenas o seu endereço de email e pode ser cancelada a qualquer momento escrevendo para turismo@cm-guimaraes.pt.</p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ NEWSLETTER ============ -->
+  <section class="newsletter">
+    <div class="container">
+      <div class="newsletter-inner">
+        <div class="newsletter-text">
+          <h3>Fique a par das novidades</h3>
+          <p>Deixe o seu e-mail e enviamos de vez em quando dicas, eventos e novidades — sem spam, prometemos.</p>
+        </div>
+        <!-- Subscrição enviada à API Flask (POST /api/newsletter) -->
+        <form class="newsletter-form" id="newsletterForm" novalidate>
+          <input type="email" id="newsletterEmail" aria-label="Endereço de correio eletrónico" placeholder="O seu endereço de correio eletrónico" />
+          <button type="submit" class="btn btn-primary">Subscrever</button>
+        </form>
+        <p class="newsletter-status" id="newsletterStatus" aria-live="polite"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ MAPA ============ -->
+  <section class="section mapa" id="transportes">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Transportes</span>
+        <h2 class="section-title">Como Chegar a Guimarães</h2>
+      </div>
+      <div class="mapa-grid">
+        <div class="mapa-info">
+          <div class="info-block">
+            <h4>✈️ De Avião</h4>
+            <p>Aeroporto Francisco Sá Carneiro (Porto) – a 50 km. Ligação por autocarro ou táxi.</p>
+          </div>
+          <div class="info-block">
+            <h4>🚂 De Comboio</h4>
+            <p>Linha do Minho com ligação directa à cidade. Estação no centro urbano.</p>
+          </div>
+          <div class="info-block">
+            <h4>🚗 De Carro</h4>
+            <p>Via A3 (Porto–Braga) + A11 ou Via A7. Parques de estacionamento no centro.</p>
+          </div>
+          <div class="info-block">
+            <h4>📞 Turismo de Guimarães</h4>
+            <p>Praça de Santiago, Centro Histórico<br />
+            Tel: +351 253 421 221<br />
+            Correio eletrónico: turismo@cm-guimaraes.pt</p>
+          </div>
+        </div>
+        <div class="mapa-embed">
+          <iframe
+            title="Mapa de Guimarães (Google Maps)"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3019.2963869484396!2d-8.29579!3d41.44386!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd24f9b7ae2b1b3b%3A0x500ef87f50d95e0!2sGuimar%C3%A3es!5e0!3m2!1spt!2spt!4v1680000000000!5m2!1spt!2spt"
+            width="100%" height="380" style="border:0; border-radius:12px;" allowfullscreen="" loading="lazy">
+          </iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer">
+    <div class="footer-top">
+      <div class="container">
+        <div class="footer-grid">
+          <div class="footer-brand">
+            <a href="#home" class="nav-logo footer-logo">
+              <span class="logo-icon">⚜</span>
+              <div>
+                <span class="logo-visit">Visitar</span><span class="logo-city">Guimarães</span>
+                <small>Berço de Portugal</small>
+              </div>
+            </a>
+            <p>O portal oficial de turismo da cidade de Guimarães, Património Mundial da UNESCO e Berço de Portugal.</p>
+            <!-- Redes sociais com os logótipos oficiais (SVG embutido) -->
+            <div class="social-links">
+              <a href="https://www.facebook.com/GuimaraesTurismo/" target="_blank" rel="noopener" aria-label="Facebook de Guimarães Turismo" class="social-facebook">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+              </a>
+              <a href="https://www.instagram.com/guimaraes_tour/" target="_blank" rel="noopener" aria-label="Instagram de Guimarães Turismo" class="social-instagram">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+              </a>
+              <a href="https://x.com/" target="_blank" rel="noopener" aria-label="X (Twitter)" class="social-x">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg>
+              </a>
+              <a href="https://www.youtube.com/@camaramunicipaldeguimaraes2802" target="_blank" rel="noopener" aria-label="YouTube da Câmara Municipal de Guimarães" class="social-youtube">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+              </a>
+            </div>
+          </div>
+          <div class="footer-col">
+            <h5>Descobrir</h5>
+            <ul>
+              <li><a href="https://pacodosduques.gov.pt/monumentos/castelo-de-guimaraes/" target="_blank" rel="noopener">Castelo de Guimarães</a></li>
+              <li><a href="https://pacodosduques.gov.pt/" target="_blank" rel="noopener">Paço dos Duques</a></li>
+              <li><a href="https://www.penhaguimaraes.com/pt/" target="_blank" rel="noopener">Serra da Penha</a></li>
+              <li><a href="https://unescoportugal.mne.gov.pt/pt/temas/proteger-o-nosso-patrimonio-e-promover-a-criatividade/patrimonio-mundial-em-portugal/centro-historico-de-guimaraes" target="_blank" rel="noopener">Centro Histórico</a></li>
+              <li><a href="https://www.museusemonumentos.pt/pt/museus-e-monumentos" target="_blank" rel="noopener">Museus</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h5>Planear</h5>
+            <ul>
+              <li><a href="#alojamento">Alojamento</a></li>
+              <li><a href="https://www.visitguimaraes.travel/descobrir/guimaraes-a-mesa" target="_blank" rel="noopener">Restaurantes</a></li>
+              <li><a href="#transportes">Como Chegar</a></li>
+              <li><a href="#transportes">Transportes</a></li>
+              <li><a href="https://www.visitguimaraes.travel/" target="_blank" rel="noopener">Guias Turísticos</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h5>Informações</h5>
+            <ul>
+              <li><a href="#historia">Sobre Guimarães</a></li>
+              <li><a href="https://www.visitportugal.com/pt-pt/content/turismo-acessivel" target="_blank" rel="noopener">Turismo Acessível</a></li>
+              <li><a href="https://www.cm-guimaraes.pt/noticias" target="_blank" rel="noopener">Imprensa</a></li>
+              <li><a href="#privacidade">Política de Privacidade</a></li>
+              <li><a href="#contacto-form">Contactos</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container">
+        <p>© 2026 Visitar Guimarães – Câmara Municipal de Guimarães. Todos os direitos reservados.</p>
+        <p>Desenvolvido com ❤️ para promover o turismo vimaranense.</p>
+      </div>
+    </div>
+  </footer>
+
+  <a href="#home" class="back-to-top" id="backToTop">↑</a>
+
+  <!-- ============ CHATBOT GUIGAS (botão flutuante + janela) ============ -->
+  <button id="chatToggle" aria-label="Abrir chat com o Guigas" data-tooltip="Olá! Sou o Guigas 👋" style="position: fixed; bottom: 20px; right: 20px; background: #b57c3d; color: white; border: none; border-radius: 50%; width: 60px; height: 60px; padding: 0; cursor: pointer; z-index: 1000; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">
+    <img src="images/guigas.jpg" alt="Guigas, o guia virtual" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%; display: block;">
+  </button>
+
+  <div id="chatBox" style="position: fixed; bottom: 90px; right: 20px; width: 340px; height: 450px; background: white; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); display: none; flex-direction: column; z-index: 1000; overflow: hidden; font-family: sans-serif;">
+    <div style="background: #b57c3d; color: white; padding: 10px 15px; font-weight: bold; display: flex; align-items: center; gap: 10px;">
+      <span style="position: relative; flex-shrink: 0;">
+        <img src="images/guigas.jpg" alt="" style="width: 36px; height: 36px; border-radius: 50%; object-fit: cover; display: block;">
+        <span style="position: absolute; bottom: 0; right: 0; width: 11px; height: 11px; background: #2ecc71; border: 2px solid #b57c3d; border-radius: 50%;"></span>
+      </span>
+      <span style="flex: 1; line-height: 1.2;">
+        <span id="chatName">Guigas</span>
+        <small id="chatStatus" style="display: block; font-weight: normal; font-size: 11px; opacity: .85;">Online · Guia IA</small>
+      </span>
+      <button id="clearChat" aria-label="Limpar conversa" title="Limpar conversa" style="background: none; border: none; color: white; font-size: 15px; cursor: pointer;">🗑</button>
+      <button id="closeChat" aria-label="Fechar chat" style="background: none; border: none; color: white; font-size: 18px; cursor: pointer;">✕</button>
+    </div>
+    <div id="chatMessages" style="flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; background: #f9f9f9;">
+      <div id="chatGreeting" style="background: #e9e9e9; color: black; padding: 10px; border-radius: 8px; max-width: 80%; align-self: flex-start; font-size: 14px;">
+        Olá! Sou o Guigas, o guia turístico com Inteligência Artificial de Guimarães. Pergunte-me qualquer coisa sobre a cidade!
+      </div>
+    </div>
+    <!-- Sugestões rápidas: um clique envia a pergunta ao bot -->
+    <div class="chat-suggestions" id="chatSuggestions">
+      <button class="chat-suggestion" type="button">O que visitar em Guimarães?</button>
+      <button class="chat-suggestion" type="button">Onde comer pratos típicos?</button>
+      <button class="chat-suggestion" type="button">Como subir à Penha?</button>
+      <button class="chat-suggestion" type="button">Onde ficar alojado?</button>
+    </div>
+    <div style="padding: 10px; background: white; border-top: 1px solid #eee; display: flex; gap: 5px;">
+      <input type="text" id="chatInput" aria-label="Mensagem para o guia" placeholder="Pergunte algo sobre Guimarães..." style="flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; outline: none;">
+      <button id="chatSendBtn" aria-label="Enviar" style="background: #b57c3d; color: white; border: none; padding: 10px 15px; border-radius: 6px; cursor: pointer; font-weight: bold;">></button>
+    </div>
+  </div>
+
+  <!-- Lightbox da galeria -->
+  <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Visualizador de imagem" hidden>
+    <button class="lb-close" id="lbClose" aria-label="Fechar">✕</button>
+    <button class="lb-prev"  id="lbPrev"  aria-label="Anterior">&#8592;</button>
+    <button class="lb-next"  id="lbNext"  aria-label="Seguinte">&#8594;</button>
+    <div class="lb-img-wrap">
+      <img id="lbImg" src="" alt="" />
+    </div>
+    <div class="lb-caption" id="lbCaption"></div>
+    <div class="lb-counter" id="lbCounter"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

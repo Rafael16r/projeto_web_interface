@@ -1,0 +1,22 @@
+# Segredos — NUNCA versionar a chave da API
+.env
+
+# Base de dados gerada (recriável com: python database.py)
+guimaraes.db
+
+# Backup local dos originais das imagens (gerado na otimização)
+_imgs_originais/
+
+# Python
+__pycache__/
+*.pyc
+
+# Node
+node_modules/
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Projeto C++ nao relacionado (mantido fora deste repositorio)
+mobilidade-lisboa/

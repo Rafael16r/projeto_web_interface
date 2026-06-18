@@ -1,0 +1,220 @@
+﻿Curso de Engenharia InformÃ¡tica
+LEI EAD - 2Âº Ano â€“ Projeto Grupo Fase 01
+Projeto Grupo Fase 02:
+ProtÃ³tipo Interativo, Teste de Usabilidade e Refinamento
+20241964 | JoÃ£o Pedro Benge do EspÃ­rito Santo Vieira
+20241781 | Nelson Rafael Soares Moreira
+20241204 | Rafael Ibraim Resende
+20241323 | Iaia BaldÃ©
+Docente:
+Paula Neves|Interfaces e Usabilidade
+Ãndice
+1.Enquadramento3
+2.Objetivos da Parte 023
+4.User Task Flow Parte 024
+5.Tipo e objetivo do protÃ³tipo6
+6. EcrÃ£s representados no protÃ³tipo7
+6.1 Fluxo de navegaÃ§Ã£o do protÃ³tipo8
+6.2 Processo de design8
+7. Teste de usabilidade8
+7.1 Objetivo do teste8
+7.2 Tarefa proposta aos participantes9
+7.3 Procedimento do teste9
+7.4 Perfil dos participantes9
+8. Resultados dos testes10
+8.1 Tabela de observaÃ§Ã£o10
+8.2 SÃ­ntese dos principais resultados11
+8.3 AnÃ¡lise geral dos resultados11
+9. Refinamento do protÃ³tipo11
+9.1 Link para a versÃ£o refinada11
+9.2 Principais alteraÃ§Ãµes realizadas12
+9.3 JustificaÃ§Ã£o das Propostas de alteraÃ§Ãµes13
+9. URL da versÃ£o final do site13
+10. ConclusÃ£o14
+Enquadramento
+A segunda fase do projeto dÃ¡ continuidade ao trabalho desenvolvido na Parte 01, avanÃ§ando da anÃ¡lise e estruturaÃ§Ã£o da experiÃªncia do utilizador para uma fase mais prÃ¡tica, centrada na criaÃ§Ã£o de um protÃ³tipo interativo, na realizaÃ§Ã£o de testes de usabilidade e no refinamento da soluÃ§Ã£o proposta.
+Nesta etapa, o foco principal Ã© validar se a navegaÃ§Ã£o definida anteriormente permite ao utilizador encontrar informaÃ§Ã£o turÃ­stica sobre GuimarÃ£es de forma simples, rÃ¡pida e coerente. Para isso, foi desenvolvido um protÃ³tipo interativo em Figma, baseado no UserTaskFlow previamente elaborado, representando o percurso do utilizador desde a pÃ¡gina inicial atÃ© Ã  consulta de informaÃ§Ã£o detalhada sobre um ponto de interesse.
+A soluÃ§Ã£o proposta mantÃ©m como base o portal web â€œVisitar GuimarÃ£esâ€, orientado para a centralizaÃ§Ã£o da informaÃ§Ã£o turÃ­stica, a descoberta de pontos de interesse e o apoio ao planeamento de visitas curtas Ã  cidade. Nesta fase, o projeto deixa de estar representado apenas atravÃ©s de diagramas e passa a ser materializado numa interface navegÃ¡vel, permitindo observar de forma mais concreta como o utilizador interage com a estrutura proposta.
+O protÃ³tipo desenvolvido procura representar os principais ecrÃ£s necessÃ¡rios para a realizaÃ§Ã£o da tarefa definida, incluindo a Home, a secÃ§Ã£o â€œDescobrir GuimarÃ£esâ€, a Ã¡rea de pontos de interesse, a pÃ¡gina de detalhe do Castelo de GuimarÃ£es e a consulta da respetiva localizaÃ§Ã£o. AtravÃ©s desta sequÃªncia, pretende-se avaliar se a organizaÃ§Ã£o da informaÃ§Ã£o, os elementos de navegaÃ§Ã£o e a clareza dos conteÃºdos sÃ£o adequados Ã s necessidades dos utilizadores.
+Posteriormente, o protÃ³tipo foi utilizado em testes de usabilidade com participantes, com o objetivo de identificar pontos fortes, dificuldades de interaÃ§Ã£o e oportunidades de melhoria. Com base nos resultados obtidos, foram propostas alteraÃ§Ãµes para refinar a experiÃªncia de utilizaÃ§Ã£o, tornando a interface mais clara, intuitiva e eficiente.
+Objetivos da Parte 02
+A Parte 02 do projeto tem como principais objetivos:
+Transformar o UserTaskFlow desenvolvido na Parte 01 num protÃ³tipo interativo navegÃ¡vel;
+Representar visualmente os principais ecrÃ£s do portal web â€œVisitar GuimarÃ£esâ€;
+Validar se o utilizador consegue realizar a tarefa proposta de forma simples e coerente;
+Avaliar a clareza da navegaÃ§Ã£o entre a Home, a secÃ§Ã£o â€œDescobrir GuimarÃ£esâ€, os pontos de interesse e a pÃ¡gina de detalhe;
+Identificar dificuldades sentidas pelos utilizadores durante a interaÃ§Ã£o com o protÃ³tipo;
+Recolher comentÃ¡rios, observaÃ§Ãµes e sugestÃµes atravÃ©s de testes de usabilidade;
+Analisar os resultados obtidos nos testes com, pelo menos, trÃªs participantes;
+Propor melhorias na interface com base nos problemas identificados;
+Refinar o protÃ³tipo, melhorando a navegaÃ§Ã£o, a organizaÃ§Ã£o dos conteÃºdos e a clareza visual da soluÃ§Ã£o;
+Demonstrar a aplicaÃ§Ã£o prÃ¡tica dos princÃ­pios de Design Centrado no Utilizador no desenvolvimento da interface.
+Continuidade com a Parte 01
+Na Parte 01, a equipa identificou a necessidade de uma plataforma simples, clara e adaptada a dispositivos mÃ³veis. A investigaÃ§Ã£o inicial mostrou que muitos utilizadores encontram dificuldades devido Ã  dispersÃ£o de informaÃ§Ã£o turÃ­stica, interfaces pouco intuitivas e excesso de passos para aceder a conteÃºdos relevantes.
+A persona principal considerada foi Paulo Costa, um turista urbano que vive em Lisboa, utiliza maioritariamente o telemÃ³vel para planear escapadinhas de curta duraÃ§Ã£o e valoriza informaÃ§Ã£o objetiva, organizada e rÃ¡pida de consultar.
+O UserTaskFlow previamente desenvolvido serviu como base direta para a construÃ§Ã£o do protÃ³tipo. A tarefa escolhida consiste em entrar na Home, aceder Ã  Ã¡rea â€œDescobrir GuimarÃ£esâ€, explorar pontos de interesse, selecionar um local relevante e consultar informaÃ§Ã£o suficiente para planear a visita.
+Elemento da Parte 01
+AplicaÃ§Ã£onaParte 02
+Persona
+MantÃ©m-se Paulo Costa como referÃªncia para decisÃµes de interface e avaliaÃ§Ã£o da tarefa.
+User Journey
+ReforÃ§a a importÃ¢ncia de apoiar o utilizador antes e durante a visita, com informaÃ§Ã£o clara, mapa e recomendaÃ§Ãµes.
+Arquitetura de InformaÃ§Ã£o
+Orienta a estrutura do menu, secÃ§Ãµes e organizaÃ§Ã£o dos conteÃºdos no protÃ³tipo.
+User Task Flow
+Define a sequÃªncia principal testada no protÃ³tipo: Home > Descobrir GuimarÃ£es > Pontos de interesse > Detalhe > Mapa/imagens.
+UserTaskFlow Parte 02
+UserTaskFlow e contextualizaÃ§Ã£o na Parte 02:
+O UserTaskFlow foi retomado nesta fase final para mostrar a ligaÃ§Ã£o entre a estrutura definida na Parte 01 e o site desenvolvido no Figma. Este fluxo representa o percurso principal que o utilizador deve conseguir realizar dentro do portal â€œVisitar GuimarÃ£esâ€, desde a entrada na Home atÃ© Ã  consulta de informaÃ§Ã£o Ãºtil sobre um ponto de interesse.
+A tarefa considerada consiste em encontrar uma secÃ§Ã£o relevante, aceder a â€œDescobrir GuimarÃ£esâ€, explorar os pontos de interesse disponÃ­veis, selecionar um local e consultar a respetiva informaÃ§Ã£o detalhada. Desta forma, o fluxo ajuda a verificar se a navegaÃ§Ã£o do site Ã© clara e se o utilizador consegue chegar Ã  informaÃ§Ã£o necessÃ¡ria sem dificuldades.
+Na versÃ£o final do protÃ³tipo, este percurso foi aplicado atravÃ©s da organizaÃ§Ã£o das pÃ¡ginas principais: Home, Descobrir GuimarÃ£es, Pontos de Interesse, pÃ¡gina de detalhe e localizaÃ§Ã£o. A Home funciona como ponto de partida, enquanto as restantes pÃ¡ginas conduzem o utilizador de forma progressiva atÃ© Ã  informaÃ§Ã£o necessÃ¡ria para planear a visita.
+O diagrama tambÃ©m apresenta momentos de decisÃ£o, como a possibilidade de o utilizador nÃ£o encontrar imediatamente a secÃ§Ã£o pretendida ou nÃ£o considerar um ponto de interesse relevante. Nestes casos, o site deve permitir regressar Ã  Home, usar o menu principal ou continuar a explorar outros pontos, evitando que o utilizador fique perdido durante a navegaÃ§Ã£o.
+Assim, nesta Parte 02, o UserTaskFlow serviu como referÃªncia para construir e testar o protÃ³tipo interativo. AtravÃ©s dele, foi possÃ­vel avaliar se a estrutura implementada corresponde ao percurso esperado e se a interface permite ao utilizador cumprir a tarefa de forma simples, lÃ³gica e eficiente.
+Tipo e objetivo doprotÃ³tipo
+Foi desenvolvido um protÃ³tipo interativo em formato Mid-Fi, com o objetivo de representar a estrutura principal do site â€œVisitar GuimarÃ£esâ€ e testar a navegaÃ§Ã£o entre as pÃ¡ginas essenciais. Nesta fase, o foco esteve sobretudo na organizaÃ§Ã£o da informaÃ§Ã£o, na hierarquia dos conteÃºdos, na clareza dos botÃµes e na facilidade de circulaÃ§Ã£o entre os diferentes ecrÃ£s.
+O protÃ³tipo foi construÃ­do com base no UserTaskFlow definido na Parte 01, transformando o percurso previsto do utilizador em pÃ¡ginas navegÃ¡veis no Figma. Assim, a sequÃªncia Home, Descobrir GuimarÃ£es, Pontos de Interesse, Detalhe do ponto turÃ­stico e LocalizaÃ§Ã£o passou a ser representada de forma interativa, permitindo simular a utilizaÃ§Ã£o real do site.
+Embora se trate de um portal web, houve a preocupaÃ§Ã£o de manter uma estrutura simples e facilmente adaptÃ¡vel a diferentes dispositivos, uma vez que a persona utiliza frequentemente o telemÃ³vel para pesquisar destinos, consultar mapas e planear deslocaÃ§Ãµes. Por esse motivo, foram privilegiados elementos claros e objetivos, como menus visÃ­veis, cartÃµes de pontos de interesse, botÃµes de aÃ§Ã£o, imagens, informaÃ§Ã£o de localizaÃ§Ã£o e opÃ§Ãµes de retorno.
+O protÃ³tipo nÃ£o pretende representar a versÃ£o visual final do site em todos os seus detalhes grÃ¡ficos, mas sim validar se o utilizador consegue realizar a tarefa principal de forma intuitiva. A intenÃ§Ã£o principal foi perceber se a navegaÃ§Ã£o proposta permite encontrar um ponto de interesse, consultar a respetiva informaÃ§Ã£o e aceder Ã  localizaÃ§Ã£o sem dificuldades relevantes.
+6. EcrÃ£s representados no protÃ³tipo
+O protÃ³tipo interativo representa os principais ecrÃ£s necessÃ¡rios para cumprir a tarefa definida: encontrar um ponto de interesse em GuimarÃ£es e consultar informaÃ§Ã£o suficiente para planear a visita. A estrutura foi organizada de forma progressiva, comeÃ§ando na Home e conduzindo o utilizador atÃ© Ã  pÃ¡gina de detalhe e Ã  localizaÃ§Ã£o do ponto selecionado.
+Os ecrÃ£s foram pensados para manter uma navegaÃ§Ã£o simples e coerente, com menus visÃ­veis, cartÃµes de pontos de interesse, botÃµes de aÃ§Ã£o claros e opÃ§Ãµes de retorno. Desta forma, o utilizador consegue avanÃ§ar ou regressar durante o percurso sem perder a orientaÃ§Ã£o dentro do site.
+EcrÃ£
+FunÃ§Ã£o no fluxo
+InteraÃ§Ãµesprevistas
+Home
+Apresenta a entrada principal do portal â€œVisitar GuimarÃ£esâ€ e dÃ¡ acesso Ã s secÃ§Ãµes principais do site.
+Clicar em â€œDescobrir GuimarÃ£esâ€ ou utilizar o menu principal.
+Menu / NavegaÃ§Ã£o
+Permite aceder Ã s principais Ã¡reas do site, como Descobrir GuimarÃ£es, Eventos, Gastronomia, Alojamento, Galeria e Contacto.
+Selecionar a secÃ§Ã£o pretendida, com destaque para â€œDescobrir GuimarÃ£esâ€.
+Descobrir GuimarÃ£es
+Organiza os conteÃºdos turÃ­sticos principais e apresenta o acesso aos pontos de interesse da cidade.
+Clicar em â€œPontos de Interesseâ€ ou selecionar diretamente um cartÃ£o.
+Lista de pontos de interesse
+Apresenta locais como o Castelo de GuimarÃ£es, PaÃ§o dos Duques, Centro HistÃ³rico e Serra da Penha.
+Explorar os cartÃµes e selecionar um ponto de interesse relevante.
+Detalhe do ponto de interesse
+Mostra descriÃ§Ã£o curta, imagens, informaÃ§Ã£o prÃ¡tica e localizaÃ§Ã£o do local escolhido.
+Clicar em â€œVer localizaÃ§Ã£oâ€, â€œVer imagensâ€ou â€œVoltarâ€.
+6.1 Fluxo de navegaÃ§Ã£o do protÃ³tipo
+O fluxo principal do protÃ³tipo segue a sequÃªncia definida no UserTaskFlow e foi transformado em pÃ¡ginas navegÃ¡veis no Figma. O percurso esperado Ã© o seguinte:
+O utilizador entra na Home principal do site.
+Identifica a opÃ§Ã£o â€œDescobrir GuimarÃ£esâ€.
+Acede Ã  Ã¡rea de pontos de interesse.
+Explora a lista de locais disponÃ­veis.
+Seleciona o Castelo de GuimarÃ£es ou outro ponto relevante.
+Consulta a informaÃ§Ã£o detalhada, imagens e localizaÃ§Ã£o.
+Confirma se a informaÃ§Ã£o Ã© suficiente para planear a visita.
+Pode guardar o ponto de interesse, voltar Ã  listagem ou consultar o mapa.
+Este percurso permite testar se a estrutura do site responde Ã  tarefa principal e se o utilizador consegue avanÃ§ar entre as pÃ¡ginas sem necessidade de ajuda externa.
+6.2 Processo de design
+O processo de design partiu da arquitetura de informaÃ§Ã£o e do UserTaskFlow definidos na fase anterior. Primeiro foram selecionados os ecrÃ£s indispensÃ¡veis para representar a tarefa principal. Em seguida, foi definida uma hierarquia simples, com tÃ­tulos claros, cartÃµes de conteÃºdo, botÃµes de aÃ§Ã£o e navegaÃ§Ã£o consistente entre pÃ¡ginas.
+Durante a construÃ§Ã£o do protÃ³tipo, procurou-se evitar excesso de informaÃ§Ã£o em cada ecrÃ£. Os dados mais importantes, como descriÃ§Ã£o breve, imagens, localizaÃ§Ã£o e informaÃ§Ã£o prÃ¡tica, foram concentrados na pÃ¡gina de detalhe do ponto de interesse, por serem elementos essenciais para a decisÃ£o de visita.
+Embora o protÃ³tipo represente um portal web, a interface foi pensada para ser simples e facilmente adaptÃ¡vel a diferentes dispositivos, tendo em conta que muitos utilizadores pesquisam destinos e consultam mapas atravÃ©s do telemÃ³vel.
+7. Teste de usabilidade
+7.1 Objetivo do teste
+O teste de usabilidade teve como objetivo avaliar se os utilizadores conseguem navegar pelo protÃ³tipo e encontrar informaÃ§Ã£o suficiente sobre um ponto de interesse em GuimarÃ£es. A observaÃ§Ã£o centrou-se na clareza da navegaÃ§Ã£o, na compreensÃ£o dos rÃ³tulos, na visibilidade dos botÃµes e nas dificuldades sentidas durante a execuÃ§Ã£o da tarefa.
+7.2 Tarefa proposta aos participantes
+A tarefa definida para o teste foi a seguinte:
+â€œImagine que vai fazer uma visita curta a GuimarÃ£es. Utilize o protÃ³tipo para encontrar o Castelo de GuimarÃ£es e confirmar a informaÃ§Ã£o necessÃ¡ria para planear a visita, incluindo descriÃ§Ã£o, localizaÃ§Ã£o e imagens.â€
+Esta tarefa foi escolhida por estar diretamente relacionada com o fluxo principal do protÃ³tipo e por representar uma necessidade comum de um utilizador que procura organizar uma visita curta Ã  cidade.
+7.3 Procedimento do teste
+Os testes foram realizados individualmente, com cada participante a interagir com o protÃ³tipo sem receber instruÃ§Ãµes durante a execuÃ§Ã£o. Antes do inÃ­cio, foi explicado que o objetivo era avaliar a interface e nÃ£o o desempenho do participante.
+O procedimento seguido foi o seguinte:
+ApresentaÃ§Ã£o breve do contexto do projeto e da tarefa a realizar.
+InÃ­cio da contagem do tempo quando o participante comeÃ§ou a navegar.
+ObservaÃ§Ã£o dos passos realizados, sem intervenÃ§Ã£o direta.
+Registo de dÃºvidas, comentÃ¡rios espontÃ¢neos e dificuldades encontradas.
+Pergunta final sobre o que foi fÃ¡cil, o que foi confuso e que melhorias poderiam ser feitas.
+7.4 Perfil dos participantes
+Participaram no teste trÃªs utilizadores com perfis gerais relacionados com o uso de websites ou aplicaÃ§Ãµes para pesquisa de informaÃ§Ã£o turÃ­stica. NÃ£o foram recolhidos dados pessoais sensÃ­veis, sendo registadas apenas informaÃ§Ãµes gerais relevantes para a anÃ¡lise da tarefa.
+Participante
+Perfilresumido
+RelaÃ§Ã£ocom atarefa
+P1
+Utilizador com 46 anos, residente em Lisboa. Utiliza websites e aplicaÃ§Ãµes para pesquisa de informaÃ§Ã£o turÃ­stica de forma ocasional, sobretudo quando pretende organizar visitas ou deslocaÃ§Ãµes especÃ­ficas.
+JÃ¡ visitou GuimarÃ£es hÃ¡ mais de 10 anos e pretende regressar num futuro prÃ³ximo, preferencialmente numa altura em que decorra algum evento do seu interesse.
+P2
+Utilizadora com 34 anos, brasileira e residente em Lisboa. Demonstra interesse em destinos com valor histÃ³rico e cultural, recorrendo a ferramentas digitais para obter informaÃ§Ã£o antes de visitar novos locais.
+Nunca visitou GuimarÃ£es, mas tem interesse na histÃ³ria da cidade e considera a possibilidade de a visitar em qualquer altura.
+P3
+Utilizadora com 63 anos, residente no Porto. Gosta de viajar e valoriza a facilidade de acesso Ã  informaÃ§Ã£o Ãºtil durante o planeamento de visitas, especialmente relacionada com gastronomia e serviÃ§os locais.
+Demonstra interesse por destinos turÃ­sticos nacionais e dÃ¡ especial importÃ¢ncia Ã  facilidade em encontrar restaurantes tÃ­picos regionais durante a visita.
+8. Resultados dos testes
+8.1 Tabela de observaÃ§Ã£o
+A tabela seguinte organiza os principais dados recolhidos durante os testes, incluindo tempo de execuÃ§Ã£o, conclusÃ£o da tarefa, dificuldades observadas e comentÃ¡rios dos participantes.
+Participante
+Tempo de execuÃ§Ã£o
+Concluiu a tarefa?
+Dificuldadesobservadas
+ComentÃ¡rios / sugestÃµes
+P1
+1 min 45 s
+Sim, de forma totalmente autÃ³noma
+Explorou a plataforma de forma autÃ³noma e conseguiu localizar informaÃ§Ã£o relacionada com eventos e programaÃ§Ã£o cultural em GuimarÃ£es. A navegaÃ§Ã£o entre diferentes secÃ§Ãµes permitiu identificar conteÃºdos relevantes para o planeamento de uma futura visita.
+Conseguiu encontrar a informaÃ§Ã£o pretendida e valorizou positivamente o facto de o link direcionar para uma pÃ¡gina oficial com eventos atualizados. Como sugestÃ£o de implementaÃ§Ã£o futura, indicou que seria Ãºtil integrar uma agenda prÃ³pria no portal, organizada por datas e tipos de evento.
+P2
+1 min 30 s
+Sim, navegou de forma autÃ³noma e intuitiva pela plataforma, conseguindo identificar a localizaÃ§Ã£o da informaÃ§Ã£o pretendida
+Navegou com facilidade pela plataforma, mas demonstrou alguma hesitaÃ§Ã£o ao procurar conteÃºdos histÃ³ricos mais detalhados sobre a cidade e os principais pontos de interesse.
+Considerou a informaÃ§Ã£o apresentada Ãºtil e adequada para quem visita GuimarÃ£es pela primeira vez. Sugeriu a inclusÃ£o de mais pontos de interesse histÃ³rico e valorizou a facilidade de navegaÃ§Ã£o atravÃ©s de hiperlinks Ãºteis, que permitem aceder a informaÃ§Ã£o complementar sobre os locais apresentados.
+P3
+3 min 19 s
+Sim, encontrou rapidamente a secÃ§Ã£o de GastronomiaVimaranense, mas demonstrou dÃºvidas sobre como localizar restaurantes especÃ­ficos ou identificar opÃ§Ãµes de restauraÃ§Ã£o tÃ­picas da regiÃ£o.
+Teve mais dificuldade em encontrar informaÃ§Ã£o especÃ­fica sobre restaurantes tÃ­picos regionais, sobretudo na distinÃ§Ã£o entre restaurantes comuns e opÃ§Ãµes ligadas Ã  gastronomia tradicional.
+Considerou a secÃ§Ã£o de gastronomia interessante e relevante, mas sugeriu que a informaÃ§Ã£o sobre restaurantes fosse apresentada de forma mais direta. Como melhoria, indicou a possibilidade de incluir uma lista de restaurantes tÃ­picos regionais, com localizaÃ§Ã£o, tipo de cozinha e proximidade aos principais pontos turÃ­sticos.
+8.2 SÃ­ntese dos principais resultados
+De forma geral, os testes permitiram perceber se a estrutura do protÃ³tipo era compreensÃ­vel e se os participantes conseguiam completar a tarefa proposta. A anÃ¡lise deve considerar tanto os aspetos que funcionaram bem como os pontos que geraram dÃºvidas ou atrasos.
+O que funcionou bem: [inserir sÃ­ntese dos aspetos positivos observados].
+Dificuldades encontradas: [inserir dificuldades mais frequentes ou momentos de hesitaÃ§Ã£o].
+SugestÃµes dos participantes: [inserir sugestÃµes recolhidas no final dos testes].
+Impacto na experiÃªncia: [explicar se as dificuldades atrasaram, confundiram ou impediram a conclusÃ£o da tarefa].
+8.3 AnÃ¡lise geral dos resultados
+A anÃ¡lise dos testes deve relacionar os resultados com a tarefa definida. Caso os participantes tenham conseguido chegar ao detalhe do Castelo de GuimarÃ£es e consultar a localizaÃ§Ã£o sem dificuldades significativas, isso indica que o fluxo principal estÃ¡ compreensÃ­vel. Por outro lado, eventuais hesitaÃ§Ãµes na Home, na secÃ§Ã£o â€œDescobrir GuimarÃ£esâ€ ou nos botÃµes da pÃ¡gina de detalhe devem ser consideradas oportunidades de melhoria.
+Os comentÃ¡rios recolhidos ajudam a perceber se os rÃ³tulos utilizados sÃ£o claros, se os cartÃµes de pontos de interesse facilitam a escolha e se a informaÃ§Ã£o apresentada Ã© suficiente para apoiar o planeamento da visita. Estes dados servem de base para justificar o refinamento do protÃ³tipo.
+9. Refinamento do protÃ³tipo
+9.1 Link para a versÃ£o refinada
+Link Figma da versÃ£o refinada: [INSERIR LINK DA VERSÃƒO REFINADA].
+9.2 Principais alteraÃ§Ãµes realizadas
+Com base nas observaÃ§Ãµes recolhidas nos testes de usabilidade, foram propostas melhorias direcionadas para a navegaÃ§Ã£o, clareza visual e facilidade de execuÃ§Ã£o da tarefa.
+Proposta de melhoria
+Problemaidentificado
+JustificaÃ§Ã£o da melhoria
+ReforÃ§o da secÃ§Ã£o de eventos com maior destaque para datas, horÃ¡rios, locais e tipos de evento.
+O participante P1 conseguiu encontrar a informaÃ§Ã£o sobre eventos, mas demonstrou interesse em consultar uma programaÃ§Ã£o mais organizada para planear a visita em funÃ§Ã£o de eventos especÃ­ficos.
+Esta melhoria facilita o planeamento da visita, sobretudo para utilizadores que pretendem deslocar-se a GuimarÃ£es numa data associada a atividades culturais, religiosas, gastronÃ³micas ou desportivas.
+Proposta de criaÃ§Ã£o de uma agenda prÃ³pria no portal, organizada por data e categoria de evento.
+A informaÃ§Ã£o sobre eventos estava disponÃ­vel, mas dependia parcialmente do reencaminhamento para pÃ¡ginas externas ou de uma apresentaÃ§Ã£o limitada no prÃ³prio portal.
+A integraÃ§Ã£o de uma agenda interna tornaria a experiÃªncia mais completa e reduziria a necessidade de o utilizador sair do portal para consultar eventos atualizados.
+InclusÃ£o de mais pontos de interesse histÃ³rico e cultural na secÃ§Ã£o dedicada a GuimarÃ£es.
+A participante P2 encontrou facilmente a informaÃ§Ã£o histÃ³rica, mas sugeriu que o portal poderia apresentar mais locais de interesse para enriquecer a visita.
+Esta alteraÃ§Ã£o torna o conteÃºdo mais completo para visitantes que nunca foram a GuimarÃ£es e que procuram compreender melhor a importÃ¢ncia histÃ³rica da cidade.
+ValorizaÃ§Ã£o dos hiperlinks Ãºteis para pÃ¡ginas oficiais e informaÃ§Ã£o complementar.
+A participante P2 considerou positiva a existÃªncia de ligaÃ§Ãµes externas, mas a navegaÃ§Ã£o poderia beneficiar de maior clareza sobre o destino desses links.
+A identificaÃ§Ã£o mais clara dos hiperlinks aumenta a confianÃ§a do utilizador, pois permite aceder rapidamente a fontes oficiais e atualizadas sobre monumentos, turismo, transportes e patrimÃ³nio.
+Proposta de filtros ou categorias na Ã¡rea de restauraÃ§Ã£o, como â€œcomida tÃ­picaâ€, â€œdoÃ§aria regionalâ€, â€œvinhosâ€ e â€œperto dos pontos turÃ­sticosâ€.
+A informaÃ§Ã£o gastronÃ³mica apresentava pratos e produtos regionais, mas nÃ£o indicava claramente onde o visitante poderia experimentar essas opÃ§Ãµes.
+A organizaÃ§Ã£o por categorias torna a pesquisa mais intuitiva e melhora a utilidade prÃ¡tica do portal durante o planeamento da visita.
+Melhoria da clareza visual das secÃ§Ãµes principais atravÃ©s de tÃ­tulos, botÃµes e chamadas de aÃ§Ã£o mais evidentes.
+Apesar de os participantes terem concluÃ­do as tarefas, algumas informaÃ§Ãµes exigiram exploraÃ§Ã£o da pÃ¡gina atÃ© serem localizadas.
+Uma hierarquia visual mais evidente facilita a navegaÃ§Ã£o num portal de pÃ¡gina Ãºnica, permitindo que o utilizador identifique rapidamente eventos, histÃ³ria, gastronomia, alojamento e ligaÃ§Ãµes Ãºteis.
+9.3 JustificaÃ§Ã£o das Propostas de alteraÃ§Ãµes
+As alteraÃ§Ãµes propostas foram definidas a partir das dificuldades observadas durante os testes de usabilidade e das sugestÃµes apresentadas pelos participantes. Estas sugestÃµes foram avaliadas e bem recebidas pela equipa, que ponderou a sua relevÃ¢ncia para a melhoria da experiÃªncia do utilizador.
+Algumas propostas, por exigirem maior desenvolvimento tÃ©cnico ou uma reorganizaÃ§Ã£o mais profunda do portal, foram registadas para uma possÃ­vel implementaÃ§Ã£o numa versÃ£o futura. Ã‰ o caso, por exemplo, da criaÃ§Ã£o de uma agenda prÃ³pria de eventos dentro do portal e da inclusÃ£o de uma listagem mais completa de restaurantes tÃ­picos regionais.
+Entretanto, foram realizadas algumas alteraÃ§Ãµes mais simples ao nÃ­vel da interface, com o objetivo de tornar o percurso mais claro, reforÃ§ar a visibilidade dos botÃµes principais e melhorar a organizaÃ§Ã£o da informaÃ§Ã£o nas secÃ§Ãµes jÃ¡ existentes. A prioridade foi garantir que os conteÃºdos mais relevantes para a visita, como pontos de interesse, eventos, gastronomia e ligaÃ§Ãµes Ãºteis, fossem encontrados de forma mais rÃ¡pida e intuitiva.
+Desta forma, a versÃ£o refinada do protÃ³tipo responde melhor Ã s necessidades identificadas na Parte 01 e Ã s observaÃ§Ãµes recolhidas durante os testes, aproximando a soluÃ§Ã£o de uma experiÃªncia mais simples, clara e centrada no utilizador.
+9. URL da versÃ£o final do site
+A versÃ£o final do site â€œVisitar GuimarÃ£esâ€ pode ser consultada atravÃ©s do seguinte link:
+URL: [INSERIR AQUI O LINK DO SITE]
+Este endereÃ§o permite aceder diretamente Ã  pÃ¡gina desenvolvida pelo grupo e testar a navegaÃ§Ã£o implementada na versÃ£o final do projeto. AtravÃ©s do site, Ã© possÃ­vel percorrer os principais ecrÃ£s definidos ao longo do trabalho, desde a Home atÃ© Ã s secÃ§Ãµes de descoberta da cidade, pontos de interesse, informaÃ§Ã£o detalhada e localizaÃ§Ã£o.
+A disponibilizaÃ§Ã£o da URL Ã© importante porque permite avaliar a soluÃ§Ã£o de forma prÃ¡tica, nÃ£o apenas atravÃ©s de imagens ou diagramas. O utilizador pode interagir com a interface, testar os botÃµes, navegar entre pÃ¡ginas e verificar se o percurso definido no UserTaskFlow foi corretamente aplicado no site final.
+Nesta versÃ£o, procurou-se transformar o planeamento realizado na Parte 01 numa experiÃªncia navegÃ¡vel e funcional. A estrutura do site reflete as decisÃµes tomadas ao longo do processo de Design Centrado no Utilizador, valorizando a organizaÃ§Ã£o da informaÃ§Ã£o, a clareza da navegaÃ§Ã£o e a facilidade de acesso aos conteÃºdos turÃ­sticos de GuimarÃ£es.
+Desta forma, a versÃ£o final permite demonstrar o resultado do trabalho desenvolvido pelo grupo e comprovar que a proposta foi alÃ©m da fase conceptual, chegando a uma soluÃ§Ã£o concreta que pode ser explorada, testada e avaliada.
+10. ConclusÃ£o
+A Parte 02 permitiu transformar a estrutura definida na primeira fase numa soluÃ§Ã£o interativa e testÃ¡vel, tornando mais concreta a proposta para o portal â€œVisitar GuimarÃ£esâ€. A criaÃ§Ã£o desta versÃ£o possibilitou representar, de forma prÃ¡tica, o percurso previsto no UserTaskFlow e observar se os utilizadores conseguiam realizar a tarefa principal com clareza, autonomia e rapidez.
+A estruturaÃ§Ã£o realizada na Parte 01 foi essencial para o desenvolvimento desta fase. A definiÃ§Ã£o da persona, da jornada do utilizador, da arquitetura de informaÃ§Ã£o e do UserTaskFlow permitiu que a construÃ§Ã£o do portal fosse mais orientada e coerente. Assim, a equipa nÃ£o partiu apenas de uma ideia visual, mas de uma base metodolÃ³gica previamente organizada, centrada nas necessidades dos utilizadores e nos objetivos definidos para a experiÃªncia turÃ­stica em GuimarÃ£es.
+Durante o desenvolvimento, surgiram alguns desafios, sobretudo relacionados com a organizaÃ§Ã£o da informaÃ§Ã£o numa pÃ¡gina Ãºnica, a definiÃ§Ã£o das prioridades de navegaÃ§Ã£o e a necessidade de apresentar conteÃºdos Ãºteis sem tornar a interface demasiado extensa ou confusa. Como o portal reÃºne diferentes Ã¡reas, como histÃ³ria, pontos de interesse, gastronomia, eventos, alojamento e ligaÃ§Ãµes externas, foi necessÃ¡rio procurar um equilÃ­brio entre quantidade de informaÃ§Ã£o, clareza visual e facilidade de utilizaÃ§Ã£o.
+Os testes de usabilidade permitiram confirmar que os participantes conseguiram concluir as tarefas propostas, mas tambÃ©m ajudaram a identificar aspetos que poderiam ser melhorados. Entre os pontos observados destacaram-se a importÃ¢ncia de dar maior visibilidade Ã  informaÃ§Ã£o sobre eventos, a utilidade dos hiperlinks para fontes oficiais e a necessidade de tornar mais direta a pesquisa por restaurantes tÃ­picos regionais. Estas observaÃ§Ãµes foram importantes porque mostraram que, mesmo quando a tarefa Ã© concluÃ­da, existem oportunidades de melhoria na forma como a informaÃ§Ã£o Ã© apresentada e organizada.
+As sugestÃµes recolhidas foram avaliadas e bem recebidas pela equipa de desenvolvimento. Algumas propostas, por exigirem maior desenvolvimento tÃ©cnico ou uma reorganizaÃ§Ã£o mais aprofundada do portal, foram registadas para uma possÃ­vel implementaÃ§Ã£o futura, como a criaÃ§Ã£o de uma agenda prÃ³pria de eventos e uma listagem mais completa de restaurantes regionais. Entretanto, foram consideradas alteraÃ§Ãµes mais simples ao nÃ­vel da interface, com o objetivo de reforÃ§ar a clareza visual, melhorar a orientaÃ§Ã£o do utilizador e tornar os elementos principais mais fÃ¡ceis de identificar.
+De forma geral, o processo demonstrou a importÃ¢ncia dos testes com utilizadores reais, uma vez que algumas dificuldades e sugestÃµes sÃ³ se tornam evidentes quando a interface Ã© utilizada na prÃ¡tica. A equipa adquiriu conhecimentos relevantes sobre prototipagem, organizaÃ§Ã£o de conteÃºdos, avaliaÃ§Ã£o de usabilidade e aplicaÃ§Ã£o do Design Centrado no Utilizador. AlÃ©m disso, o trabalho permitiu compreender melhor a importÃ¢ncia de desenvolver soluÃ§Ãµes digitais nÃ£o apenas visualmente apelativas, mas tambÃ©m funcionais, intuitivas e alinhadas com as necessidades de quem as utiliza.
+Conclui-se, assim, que a versÃ£o refinada do portal responde de forma mais adequada aos objetivos definidos na Parte 01 e Ã s observaÃ§Ãµes recolhidas durante os testes. O projeto apresenta uma soluÃ§Ã£o coerente para apoiar a descoberta turÃ­stica de GuimarÃ£es, valorizando a sua dimensÃ£o histÃ³rica, cultural e gastronÃ³mica, ao mesmo tempo que identifica possibilidades de evoluÃ§Ã£o para versÃµes futuras.

@@ -30,6 +30,10 @@ const MSG = {
     newsDuplicate: 'Este email já está subscrito.',
     newsOk: 'Subscrição confirmada! Obrigado.',
     newsOffline: 'Subscrição registada (modo offline).',
+    newsInvalid: 'Introduza um endereço de e-mail válido.',
+    allCategories: 'Todos',
+    sending: 'A enviar...',
+    subscribing: 'A subscrever...',
     noResults: 'Sem resultados para a pesquisa.',
     apiOffline: 'API não ligada — a mostrar dados locais.',
     eventDetails: 'Ver detalhes',
@@ -57,6 +61,10 @@ const MSG = {
     newsDuplicate: 'This email is already subscribed.',
     newsOk: 'Subscription confirmed! Thank you.',
     newsOffline: 'Subscription saved (offline mode).',
+    newsInvalid: 'Enter a valid email address.',
+    allCategories: 'All',
+    sending: 'Sending...',
+    subscribing: 'Subscribing...',
     noResults: 'No results for your search.',
     apiOffline: 'API offline — showing local data.',
     eventNone: 'No events on the chosen date — check the agenda highlights.',
@@ -77,6 +85,41 @@ const MSG = {
 };
 // Atalho: devolve a mensagem no idioma atual
 const L = (chave) => MSG[currentLang][chave];
+
+function appendText(parent, tag, text, className) {
+  const el = document.createElement(tag);
+  if (className) el.className = className;
+  el.textContent = text || '';
+  parent.appendChild(el);
+  return el;
+}
+
+function safeUrl(url, fallback = '#') {
+  try {
+    const raw = String(url || fallback).trim();
+    if (raw.startsWith('#')) return raw;
+    const parsed = new URL(raw, window.location.href);
+    return ['http:', 'https:', 'mailto:', 'tel:'].includes(parsed.protocol)
+      ? parsed.href
+      : fallback;
+  } catch (_) {
+    return fallback;
+  }
+}
+
+function setButtonBusy(button, busy, label) {
+  if (!button) return;
+  if (busy) {
+    if (!button.dataset.defaultText) button.dataset.defaultText = button.textContent;
+    button.disabled = true;
+    button.setAttribute('aria-busy', 'true');
+    button.textContent = label;
+    return;
+  }
+  button.disabled = false;
+  button.removeAttribute('aria-busy');
+  if (button.dataset.defaultText) button.textContent = button.dataset.defaultText;
+}
 
 // Barra de navegação: ganha fundo sólido ao fazer scroll; mostra o botão "voltar ao topo"
 const navbar = document.getElementById('navbar');
@@ -110,7 +153,14 @@ mobileMenu.querySelectorAll('a').forEach(link => {
 // Scroll suave para as âncoras internas (compensa a altura da navbar fixa)
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   anchor.addEventListener('click', function (e) {
-    const target = document.querySelector(this.getAttribute('href'));
+    const href = this.getAttribute('href');
+    if (!href || href === '#') return;
+    let target = null;
+    try {
+      target = document.querySelector(href);
+    } catch (_) {
+      return;
+    }
     if (target) {
       e.preventDefault();
       const offset = 80;
@@ -130,7 +180,7 @@ const observer = new IntersectionObserver((entries) => {
   });
 }, observerOptions);
 
-document.querySelectorAll('.card, .activity-card, .food-card, .event-card, .hotel-card, .info-block, .stat-item, .historia-item, .galeria-item, .ligacao-card').forEach(el => {
+document.querySelectorAll('.card, .activity-card, .roteiro-card, .food-card, .event-card, .hotel-card, .info-block, .stat-item, .historia-item, .galeria-item, .ligacao-card').forEach(el => {
   el.classList.add('fade-in');
   observer.observe(el);
 });
@@ -140,14 +190,22 @@ document.querySelectorAll('.card, .activity-card, .food-card, .event-card, .hote
 document.querySelector('.newsletter-form')?.addEventListener('submit', async (e) => {
   e.preventDefault();
   const input = e.target.querySelector('input');
+  const button = e.target.querySelector('button[type="submit"]');
   const status = document.getElementById('newsletterStatus');
   const diz = (msg) => { if (status) status.textContent = msg; else alert(msg); };
-  if (!input.value || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(input.value.trim())) return;
+  const email = input.value.trim();
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
+    input.classList.add('invalid');
+    diz(L('newsInvalid'));
+    return;
+  }
+  input.classList.remove('invalid');
+  setButtonBusy(button, true, L('subscribing'));
   try {
     const r = await fetch(API.newsletter, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: input.value.trim() })
+      body: JSON.stringify({ email })
     });
     const data = await r.json();
     if (r.status === 409 || data.duplicate) { diz(L('newsDuplicate')); return; }
@@ -158,6 +216,8 @@ document.querySelector('.newsletter-form')?.addEventListener('submit', async (e)
     // API offline — regista localmente para não perder a interação
     input.value = '';
     diz(L('newsOffline'));
+  } finally {
+    setButtonBusy(button, false);
   }
 });
 
@@ -212,6 +272,8 @@ if (contactoForm) {
       message: rules['cf-mensagem'].el.value
     };
     let aceite = true;
+    const submitBtn = contactoForm.querySelector('button[type="submit"]');
+    setButtonBusy(submitBtn, true, L('sending'));
     try {
       const r = await fetch(API.contact, {
         method: 'POST',
@@ -219,13 +281,15 @@ if (contactoForm) {
         body: JSON.stringify(payload)
       });
       const data = await r.json().catch(() => ({}));
-      if (!r.ok && data && data.errors) {
+      if (!r.ok || data?.ok === false) {
         // O backend recusou (validação/moderação) — mostra o motivo no primeiro erro
         aceite = false;
         const err = document.getElementById('err-mensagem');
-        if (err) err.textContent = data.reason || L('serverRejected');
+        if (err) err.textContent = data?.reason || data?.message || L('serverRejected');
+        rules['cf-mensagem'].el.classList.add('invalid');
       }
     } catch (_) { /* API offline — segue com confirmação local */ }
+    finally { setButtonBusy(submitBtn, false); }
     if (!aceite) return;
     contactoForm.reset();
     Object.keys(rules).forEach(id => rules[id].el.classList.remove('invalid'));
@@ -278,7 +342,43 @@ const PLACE_IMAGES = {
 };
 
 let allPlaces = [];          // últimos resultados recebidos (API ou fallback)
-let showAllPOI = false;      // false = mostra 6; true = mostra todos
+let showAllPOI = false;      // false = mostra 5; true = mostra todos
+let activePOICategory = '';
+let placesStatusMessage = '';
+
+function fallbackPlacesForLang() {
+  return currentLang === 'en' ? FALLBACK_PLACES_EN : FALLBACK_PLACES;
+}
+
+function setPlacesStatus(message) {
+  placesStatusMessage = message || '';
+  const status = document.getElementById('tourismStatus');
+  if (status) status.textContent = placesStatusMessage;
+}
+
+function getFilteredPlaces(places) {
+  if (!activePOICategory) return places;
+  return places.filter(place => (place.category || '').trim() === activePOICategory);
+}
+
+function updatePOIFilters(places) {
+  const filters = document.getElementById('poiFilters');
+  if (!filters) return;
+  const categories = [...new Set(places.map(place => (place.category || '').trim()).filter(Boolean))]
+    .sort((a, b) => a.localeCompare(b, currentLang === 'en' ? 'en' : 'pt'));
+  if (activePOICategory && !categories.includes(activePOICategory)) activePOICategory = '';
+
+  filters.textContent = '';
+  const allButton = appendText(filters, 'button', L('allCategories'), 'poi-filter' + (!activePOICategory ? ' active' : ''));
+  allButton.type = 'button';
+  allButton.dataset.category = '';
+
+  categories.forEach(category => {
+    const button = appendText(filters, 'button', category, 'poi-filter' + (category === activePOICategory ? ' active' : ''));
+    button.type = 'button';
+    button.dataset.category = category;
+  });
+}
 
 // Constrói o cartão HTML de um ponto de interesse (mesmo formato dos estáticos)
 function buildPlaceCard(place, idx) {
@@ -286,37 +386,64 @@ function buildPlaceCard(place, idx) {
   const isFirst = idx === 0 && !showAllPOI;
   const card = document.createElement('div');
   card.className = 'card fade-in' + (isFirst ? ' card-large' : '');
-  card.innerHTML = `
-    <div class="card-img-wrap">
-      <img src="${img}" alt="${place.title}" loading="${isFirst ? 'eager' : 'lazy'}" />
-      ${place.badge ? `<span class="card-badge${place.badge === 'UNESCO' ? ' card-badge-alt' : ''}">${place.badge}</span>` : ''}
-    </div>
-    <div class="card-body">
-      <span class="card-cat">${place.category || 'Local'}</span>
-      <h3>${place.title || ''}</h3>
-      <p class="card-desc">${place.description || ''}</p>
-      <a href="${place.link || '#'}" class="card-link" target="_blank" rel="noopener">${L('readMore')} <span>→</span></a>
-    </div>`;
+
+  const imageWrap = document.createElement('div');
+  imageWrap.className = 'card-img-wrap';
+  const image = document.createElement('img');
+  image.src = img;
+  image.alt = place.title || '';
+  image.loading = isFirst ? 'eager' : 'lazy';
+  imageWrap.appendChild(image);
+  if (place.badge) {
+    appendText(
+      imageWrap,
+      'span',
+      place.badge,
+      'card-badge' + (place.badge === 'UNESCO' ? ' card-badge-alt' : '')
+    );
+  }
+  card.appendChild(imageWrap);
+
+  const body = document.createElement('div');
+  body.className = 'card-body';
+  appendText(body, 'span', place.category || 'Local', 'card-cat');
+  appendText(body, 'h3', place.title || '');
+  appendText(body, 'p', place.description || '', 'card-desc');
+
+  const link = document.createElement('a');
+  link.href = safeUrl(place.link);
+  link.className = 'card-link';
+  link.target = '_blank';
+  link.rel = 'noopener';
+  link.append(document.createTextNode(L('readMore') + ' '));
+  appendText(link, 'span', '→');
+  body.appendChild(link);
+  card.appendChild(body);
+
   // Anima os cartões dinâmicos com o mesmo observer dos estáticos
   setTimeout(() => card.classList.add('visible'), idx * 60);
   return card;
 }
 
-// Desenha os cartões na grelha (6 iniciais ou todos)
+// Desenha os cartões na grelha (5 iniciais ou todos)
 function renderPlaces(places) {
   const grid = document.getElementById('tourismResults');
   if (!grid) return;
+  const visiblePlaces = getFilteredPlaces(places);
+  const status = document.getElementById('tourismStatus');
   grid.innerHTML = '';
-  if (!places.length) { grid.hidden = false; return; }
-  (showAllPOI ? places : places.slice(0, 5)).forEach((p, i) => grid.appendChild(buildPlaceCard(p, i)));
+  if (!visiblePlaces.length) {
+    if (status) status.textContent = L('noResults');
+    grid.hidden = false;
+    return;
+  }
+  if (status) status.textContent = placesStatusMessage;
+  (showAllPOI ? visiblePlaces : visiblePlaces.slice(0, 5)).forEach((p, i) => grid.appendChild(buildPlaceCard(p, i)));
   grid.hidden = false;
 }
 
 // Consulta a API de pontos de interesse; usa a lista local se estiver offline
 async function fetchPlaces(query) {
-  const status = document.getElementById('tourismStatus');
-  const grid   = document.getElementById('tourismResults');
-
   try {
     const url = new URL(API.places);
     if (query) url.searchParams.set('q', query);
@@ -325,7 +452,7 @@ async function fetchPlaces(query) {
     if (!r.ok) throw new Error('API ' + r.status);
     const data = await r.json();
     allPlaces = data.results || [];
-    if (status) status.textContent = allPlaces.length ? '' : L('noResults');
+    setPlacesStatus(allPlaces.length ? '' : L('noResults'));
   } catch (_) {
     // Offline: filtra a lista local (no idioma atual) com o mesmo critério da API.
     // A normalização remove acentos: "paco" também encontra "Paço"
@@ -335,10 +462,23 @@ async function fetchPlaces(query) {
     allPlaces = q
       ? base.filter(p => norm(p.title + p.description + p.category).includes(q))
       : base;
-    if (status) status.textContent = allPlaces.length ? L('apiOffline') : L('noResults');
+    setPlacesStatus(allPlaces.length ? L('apiOffline') : L('noResults'));
   }
+  updatePOIFilters(allPlaces);
   renderPlaces(allPlaces);
 }
+
+document.getElementById('poiFilters')?.addEventListener('click', (e) => {
+  const button = e.target.closest('button[data-category]');
+  if (!button) return;
+  activePOICategory = button.dataset.category || '';
+  showAllPOI = false;
+  const places = allPlaces.length ? allPlaces : fallbackPlacesForLang();
+  updatePOIFilters(places);
+  renderPlaces(places);
+  const showAllBtn = document.getElementById('showAllPlaces');
+  if (showAllBtn) showAllBtn.textContent = L('showAll');
+});
 
 // Meses aceites no cartão de evento (abreviaturas PT e EN) -> número do mês
 const MESES_EVENTO = { jan:1, fev:2, feb:2, mar:3, abr:4, apr:4, mai:5, may:5, jun:6, jul:7, ago:8, aug:8, set:9, sep:9, out:10, oct:10, nov:11, dez:12, dec:12 };
@@ -468,30 +608,45 @@ function hsRenderPanel(query) {
     : HS_SUGGESTIONS;
 
   if (!filtered.length) {
-    body.innerHTML = `<div class="hs-no-results">Sem sugestões para "<strong>${query}</strong>" — prima Enter para pesquisar com IA</div>`;
+    body.textContent = '';
+    const empty = document.createElement('div');
+    empty.className = 'hs-no-results';
+    empty.append(document.createTextNode('Sem sugestões para "'));
+    appendText(empty, 'strong', query);
+    empty.append(document.createTextNode('" — prima Enter para pesquisar com IA'));
+    body.appendChild(empty);
     panel.hidden = false; return;
   }
 
   const groups = {};
   for (const it of filtered) { (groups[it.group] = groups[it.group]||[]).push(it); }
 
-  let html = '';
   const entries = Object.entries(groups);
+  body.textContent = '';
   entries.forEach(([grp, items], gi) => {
-    html += `<div class="hs-group-label">${grp}</div>`;
+    appendText(body, 'div', grp, 'hs-group-label');
     items.forEach(it => {
-      html += `<div class="hs-item" data-q="${it.q}" data-anchor="${it.anchor}">
-        <div class="hs-item-icon">${it.icon}</div>
-        <div class="hs-item-text">
-          <div class="hs-item-title">${it.title}</div>
-          <div class="hs-item-sub">${it.sub}</div>
-        </div>
-        <span class="hs-item-arr">→</span>
-      </div>`;
+      const item = document.createElement('div');
+      item.className = 'hs-item';
+      item.dataset.q = it.q;
+      item.dataset.anchor = it.anchor;
+      appendText(item, 'div', it.icon, 'hs-item-icon');
+
+      const text = document.createElement('div');
+      text.className = 'hs-item-text';
+      appendText(text, 'div', it.title, 'hs-item-title');
+      appendText(text, 'div', it.sub, 'hs-item-sub');
+      item.appendChild(text);
+
+      appendText(item, 'span', '→', 'hs-item-arr');
+      body.appendChild(item);
     });
-    if (gi < entries.length - 1) html += '<div class="hs-sep"></div>';
+    if (gi < entries.length - 1) {
+      const sep = document.createElement('div');
+      sep.className = 'hs-sep';
+      body.appendChild(sep);
+    }
   });
-  body.innerHTML = html;
 
   body.querySelectorAll('.hs-item').forEach(el => {
     el.addEventListener('click', () => {
@@ -578,9 +733,12 @@ async function hsSearch(query) {
 
   // Chips de ação
   const chips = hsActionChips(query);
-  aiActions.innerHTML = chips.map(c =>
-    `<button class="hs-ai-action" data-anchor="${c.anchor}">${c.label}</button>`
-  ).join('');
+  aiActions.textContent = '';
+  chips.forEach(c => {
+    const btn = appendText(aiActions, 'button', c.label, 'hs-ai-action');
+    btn.type = 'button';
+    btn.dataset.anchor = c.anchor;
+  });
   aiActions.querySelectorAll('.hs-ai-action').forEach(btn => {
     btn.addEventListener('click', () => {
       document.getElementById(btn.dataset.anchor)?.scrollIntoView({ behavior:'smooth' });
@@ -651,7 +809,9 @@ if (campoData) campoData.min = new Date().toISOString().slice(0, 10);
 document.getElementById('showAllPlaces')?.addEventListener('click', (e) => {
   e.preventDefault();
   showAllPOI = !showAllPOI;
-  renderPlaces(allPlaces.length ? allPlaces : (currentLang === 'en' ? FALLBACK_PLACES_EN : FALLBACK_PLACES));
+  const places = allPlaces.length ? allPlaces : fallbackPlacesForLang();
+  updatePOIFilters(places);
+  renderPlaces(places);
   e.target.textContent = showAllPOI ? L('showLess') : L('showAll');
 });
 
@@ -944,8 +1104,8 @@ const FALLBACK_PLACES_EN = [
 // Dicionário EN — textos simples (textContent), por seletor CSS.
 // Um array aplica-se aos elementos pela ordem em que aparecem na página.
 const EN_TEXTS = {
-  '.nav-links li a': ['Discover', 'History', 'Activities', 'Gastronomy', 'Gallery', 'Events', 'Accommodation', 'Links', 'Contact'],
-  '.mobile-menu a': ['Discover', 'History', 'Activities', 'Gastronomy', 'Gallery', 'Events', 'Accommodation', 'Useful Links', 'Contact', 'Map'],
+  '.nav-links li a': ['Discover', 'History', 'Activities', 'Itinerary', 'Gastronomy', 'Gallery', 'Events', 'Accommodation', 'Links', 'Contact'],
+  '.mobile-menu a': ['Discover', 'History', 'Activities', 'Itinerary', 'Gastronomy', 'Gallery', 'Events', 'Accommodation', 'Useful Links', 'Contact', 'Map'],
   '.hero-label': 'Welcome to',
   '.hero-subtitle': 'This is where Portugal was born. A city where history is not kept in a museum — it lives on the streets.',
   "label[for='tourismQuery']": 'What are you looking for?',
@@ -953,12 +1113,13 @@ const EN_TEXTS = {
   '.btn-search': '🔍 Search',
   '.hero-scroll span': 'Discover more',
   '.stat-label': ['Years of history', 'Residents', 'World Heritage', 'European Capital of Culture'],
-  '.section-tag': ['Origins', 'Points of Interest', 'Experiences', 'Local Flavours', 'Photos', 'Agenda', 'Where to Stay', 'Useful Resources', 'Talk to Us', 'Transport'],
-  '.section-title': ['History of Guimarães', 'Discover Guimarães', 'What to Do in Guimarães', 'Guimarães Gastronomy', 'Image Gallery', 'Featured Events', 'Where to Stay in Guimarães', 'External Links', 'Contact Form', 'How to Get to Guimarães'],
+  '.section-tag': ['Origins', 'Points of Interest', 'Experiences', 'One Day', 'Local Flavours', 'Photos', 'Agenda', 'Where to Stay', 'Useful Resources', 'Talk to Us', 'Transport'],
+  '.section-title': ['History of Guimarães', 'Discover Guimarães', 'What to Do in Guimarães', 'A well-spent day in Guimarães', 'Guimarães Gastronomy', 'Image Gallery', 'Featured Events', 'Where to Stay in Guimarães', 'External Links', 'Contact Form', 'How to Get to Guimarães'],
   '.section-desc': [
     'The city where Portugal was born, with more than a thousand years of history that helped shape a nation.',
     'There is plenty to see in Guimarães — from medieval castles to museums, churches and viewpoints with views worth keeping.',
     'Whether you want to explore the castle, go up to Penha or watch a Vitória match, there is always something to do in Guimarães.',
+    'A practical suggestion for seeing the essentials without rushing: historic centre in the morning, Penha in the afternoon and local flavours at the end of the day.',
     'Eating well in Guimarães is easy. The local codfish, the pão-de-ló and the vinho verde speak for themselves.',
     'Some of the images that best represent Guimarães — for those who have visited and want to remember, or for those still planning the trip.',
     'From June to September the city never stops — and even off season there is always something going on.',
@@ -984,6 +1145,14 @@ const EN_TEXTS = {
     'Traditional pottery, filigree and textiles from Guimarães.',
     'Support Vitória SC in one of the most beautiful stadiums in the country.'
   ],
+  '.roteiro-step': ['Morning', 'Afternoon', 'End of day'],
+  '.roteiro-card h3': ['Start at the sacred hill', 'Go up to Penha', 'Finish in the heart of the city'],
+  '.roteiro-card p': [
+    'Visit the Castle and the Palace of the Dukes, then walk down to the historic centre through the medieval streets.',
+    'After lunch, take the cable car or drive up to Penha Mountain to see the city from above.',
+    'Return to Largo da Oliveira or Santiago Square for dinner, vinho verde and the local evening atmosphere.'
+  ],
+  '.roteiro-meta': ['Castle · Palace of the Dukes · Rua de Santa Maria', 'Cable car · Sanctuary · Viewpoints', 'Largo da Oliveira · Santiago Square · Gastronomy'],
   '.banner-content h2': '"Portugal was born here"',
   '.banner-content p': 'Guimarães is not just visited — it is felt. Bring the family, your friends, or come alone. You will want to come back.',
   '.banner-content .btn': 'Plan my visit',
@@ -1022,8 +1191,8 @@ const EN_TEXTS = {
   '.info-block h4': ['✈️ By Plane', '🚂 By Train', '🚗 By Car', '📞 Guimarães Tourism Office'],
   '.footer-col h5': ['Discover', 'Plan', 'Information'],
   '.footer-col ul li a': ['Guimarães Castle', 'Palace of the Dukes', 'Penha Mountain', 'Historic Centre', 'Museums', 'Accommodation', 'Restaurants', 'How to Get Here', 'Transport', 'Tourist Guides', 'About Guimarães', 'Accessible Tourism', 'Press', 'Privacy Policy', 'Contacts'],
-  '.footer-brand p': 'The official tourism portal for the city of Guimarães, a UNESCO World Heritage site and the birthplace of Portugal.',
-  '.footer-bottom p': ['© 2026 Visitar Guimarães – Guimarães Town Hall. All rights reserved.', 'Developed with ❤️ to promote tourism in Guimarães.'],
+  '.footer-brand p': 'An academic tourism project about Guimarães, a UNESCO World Heritage site and the birthplace of Portugal.',
+  '.footer-bottom p': ['© 2026 Visitar Guimarães – Academic project. Content and brands belong to their respective owners.', 'Developed with ❤️ to promote tourism in Guimarães.'],
   '#chatStatus': 'Online · AI Guide',
   '#chatGreeting': 'Hello! I am Guigas, the AI tourist guide for Guimarães. Ask me anything about the city!'
 };
@@ -1154,21 +1323,30 @@ const FALLBACK_EVENTS = {
 function buildEventCard(ev) {
   const card = document.createElement('div');
   card.className = 'event-card';
-  const meta = [];
-  if (ev.location) meta.push(`<span>📍 ${ev.location}</span>`);
-  if (ev.time) meta.push(`<span>🕐 ${ev.time}</span>`);
-  card.innerHTML = `
-    <div class="event-date">
-      <span class="event-day">${String(ev.day || '').padStart(2, '0')}</span>
-      <span class="event-month">${ev.month_label || ''}</span>
-    </div>
-    <div class="event-info">
-      <span class="event-cat">${ev.category || L('eventDefaultCat')}</span>
-      <h4>${ev.title}</h4>
-      ${ev.summary ? `<p>${ev.summary}</p>` : ''}
-      ${meta.length ? `<div class="event-meta">${meta.join('')}</div>` : ''}
-    </div>
-    <a href="${ev.link}" target="_blank" rel="noopener" class="btn btn-sm">${L('eventDetails')}</a>`;
+
+  const date = document.createElement('div');
+  date.className = 'event-date';
+  appendText(date, 'span', String(ev.day || '').padStart(2, '0'), 'event-day');
+  appendText(date, 'span', ev.month_label || '', 'event-month');
+  card.appendChild(date);
+
+  const info = document.createElement('div');
+  info.className = 'event-info';
+  appendText(info, 'span', ev.category || L('eventDefaultCat'), 'event-cat');
+  appendText(info, 'h4', ev.title || '');
+  if (ev.summary) appendText(info, 'p', ev.summary);
+
+  const meta = document.createElement('div');
+  meta.className = 'event-meta';
+  if (ev.location) appendText(meta, 'span', '📍 ' + ev.location);
+  if (ev.time) appendText(meta, 'span', '🕐 ' + ev.time);
+  if (meta.children.length) info.appendChild(meta);
+  card.appendChild(info);
+
+  const link = appendText(card, 'a', L('eventDetails'), 'btn btn-sm');
+  link.href = safeUrl(ev.link);
+  link.target = '_blank';
+  link.rel = 'noopener';
   return card;
 }
 
